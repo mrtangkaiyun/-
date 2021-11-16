@@ -1,3 +1,4 @@
+import { companyOptions } from '@/utils/option'
 export const columns = [
     {
         title: '序号',
@@ -7,48 +8,62 @@ export const columns = [
     },
     {
         title: '员工编号',
-        dataIndex: 'commodityName',
+        dataIndex: 'number',
         width: 120,
-        key: 'commodityName'
+        key: 'number'
     },
     {
         title: '姓名',
-        dataIndex: 'a',
+        dataIndex: 'name',
         width: 100,
-        key: 'a'
+        key: 'name'
     },
     {
         title: '所属单位',
-        dataIndex: 'currentPrice',
+        dataIndex: 'company',
         width: 100,
-        key: 'currentPrice'
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '学历',
-        dataIndex: 'originalPrice',
+        dataIndex: 'education',
         width: 100,
-        key: 'originalPrice'
+        key: 'education'
+    },
+    {
+        title: '专业资格技术',
+        dataIndex: 'technicalName',
+        width: 90,
+        key: 'technicalName'
+    },
+    {
+        title: '技能等级名',
+        dataIndex: 'skillLevelName',
+        width: 120,
+        key: 'skillLevelName'
     },
     {
         title: '师徒状态',
-        dataIndex: 'recommend',
-        width: 90,
-        key: 'recommend'
+        dataIndex: 'state',
+        width: 120,
+        key: 'state',
+        scopedSlots: { customRender: 'state' }
     },
     {
         title: '操作',
         key: 'action',
         fixed: 'right',
-        width: 250,
+        width: 240,
         scopedSlots: { customRender: 'action' }
     }
 ]
 
 export const searchData = [
     [
-        { type: 'input', key: 'commodityName', label: '姓名', placeholder: '请输入姓名' },
-        { type: 'select', key: 'recommend', label: '所属单位', placeholder: '请选择', options: [{ label: '是', value: 'Y' }, { label: '否', value: 'N' }] },
-        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '是', value: 'Y' }, { label: '否', value: 'N' }] },
+        { type: 'input', key: 'name', label: '姓名', placeholder: '请输入姓名' },
+        { type: 'select', key: 'company', label: '所属单位', placeholder: '请选择', options: companyOptions },
+        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '空闲 ', value: '1' }, { label: '带徒中', value: '2' }] },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],
@@ -73,26 +88,28 @@ export const listColumns = [
     },
     {
         title: '所属单位',
-        dataIndex: 'b',
+        dataIndex: 'company',
         width: 120,
-        key: 'b'
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '学历',
-        dataIndex: 'c',
+        dataIndex: 'education',
         width: 80,
-        key: 'c'
+        key: 'education'
     },
     {
         title: '配对日期',
-        dataIndex: 'c',
-        width: 80,
-        key: 'c'
+        dataIndex: 'foundTime',
+        width: 100,
+        key: 'foundTime'
     },
     {
         title: '师徒状态',
-        dataIndex: 'c',
+        dataIndex: 'isGraduation',
         width: 80,
-        key: 'c'
+        key: 'isGraduation',
+        scopedSlots: { customRender: 'state' }
     }
 ]

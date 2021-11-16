@@ -148,7 +148,12 @@ export const recordOptions = [
         value: '小学'
     }
 ]
-
+export const departmentOptions = [
+    {
+        label: '所属部门',
+        value: '1'
+    } 
+]
 export const companyOptions = [
     {
         label: '国网湖北省电力有限公司武汉供电公司',
@@ -254,3 +259,8 @@ export const issuerOptions = [
         value: '师傅'
     }
  ]
+
+ export const valueToLabelOption = function (name, value) {
+    const obj = [name].find(e => (e.value === value))
+    return obj ? obj.value : ''
+}

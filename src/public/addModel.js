@@ -62,7 +62,7 @@ export default {
             this.$emit('input', false)
         },
         process (res) {
-            if (res.code === 1) {
+            if (res.code === 0) {
                 this.$message.success(this.dialog.title + this.$t('成功'))
                 this.closeDialog()
                 if (this.data.type === 'add') {

@@ -3,13 +3,13 @@
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
         <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @import="importFile" @add="clickAdd"></search-bar>
-        <div class="delete-box">
+        <!-- <div class="delete-box">
           <popconfirm-button custom :data="record" @click="clickDeleteSelect">
             <a-button :disabled="!selectedRowKeys || selectedRowKeys.length === 0" type="danger">
               删除
             </a-button>
           </popconfirm-button>
-        </div>
+        </div> -->
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -23,6 +23,15 @@
         >
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
+          </template>
+          <template slot="company" slot-scope="company">
+            {{ valueToLabelOption('companyOptions', company) }}
+          </template>
+          <template slot="state" slot-scope="state">
+            {{ state === 2 ? '带徒中' : '空闲' }}
+          </template>
+          <template slot="company" slot-scope="company">
+            {{ valueToLabelOption('companyOptions', company) }}
           </template>
           <span slot="action" slot-scope="text, record">
             <!-- <a-icon @click="clickUpdate(record)" type="form" /> -->
@@ -58,10 +67,11 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list, remove } from '@/api/master'
+import { list, remove, importExcel } from '@/api/master'
 import model from '@/public/indexModel.js'
 import ListModal from './ListModal'
 import Add from './Add'
+import { valueToLabelOption } from '@/utils/option'
 export default {
   name: 'Master',
   mixins: [model],
@@ -83,6 +93,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    valueToLabelOption,
     fetchData (params = {}) {
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
@@ -91,19 +102,23 @@ export default {
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }
     },
-    clickDeleteSelect () {
-      const { selectedRowKeys } = this
-    },
+    // clickDeleteSelect () {
+    //   const { selectedRowKeys } = this
+    // },
     clickDelete (record) {
-      remove(record.id).then(({ code }) => {
-        if (code === 1) {
+      const param = {
+        id: record.id,
+        number: record.number
+      }
+      remove(param).then(({ code }) => {
+        if (code === 0) {
           this.$message.success('删除成功')
           this.conditionPage()
           this.fetchData(this.params)
@@ -122,7 +137,7 @@ export default {
     customRequest (e) {
       const form = new FormData()
       form.append('file', e.file)
-      remove(form).then(({ code, message }) => {
+      importExcel(form).then(({ code, message }) => {
         if (code === 0) {
           this.$refs.table.refresh()
           this.$message.success(message || '导入成功')

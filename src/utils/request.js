@@ -14,7 +14,8 @@ const request = axios.create({
   // baseURL: 'http://39.100.91.195:8000/admin',
   // baseURL: 'https://123.57.210.202:8000/admin',
   // baseURL: 'https://huiqian.shop/admin',
-  baseURL: 'http://39.99.170.112:8095/api',
+  // baseURL: 'http://39.99.170.112:8095/api',
+  baseURL: 'http://demofortest.natapp1.cc/api',
   timeout: 6000 // 请求超时时间
 })
 
@@ -66,7 +67,14 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  const { data: { code, message, status } } = response
+  let { data: { code, message, status } } = response
+  if(code && code == '200') {
+    code = 0
+    response.data.code = 0
+  } else if(code === '0' || code === 0) {
+    code = 200
+    response.data.code = 200
+  }
   if (code === -20 || status === -20) {
     Modal.warning({
       title: '提示',
@@ -79,7 +87,7 @@ request.interceptors.response.use((response) => {
       }
     })
     return Promise.reject(response.data)
-  } else if (code !== 1) {
+  } else if (code !== 0) {
     Message.error(message || '请求错误')
   }
   return response.data

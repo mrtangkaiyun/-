@@ -8,45 +8,47 @@ export const columns = [
     },
     {
         title: '员工编号',
-        dataIndex: 'commodityName',
+        dataIndex: 'number',
         width: 120,
-        key: 'commodityName'
+        key: 'number'
     },
     {
         title: '姓名',
-        dataIndex: 'a',
+        dataIndex: 'name',
         width: 100,
-        key: 'a'
+        key: 'name'
     },
     {
         title: '所属单位',
-        dataIndex: 'currentPrice',
+        dataIndex: 'company',
         width: 100,
-        key: 'currentPrice'
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '学历',
-        dataIndex: 'originalPrice',
+        dataIndex: 'education',
         width: 100,
-        key: 'originalPrice'
+        key: 'education'
     },
     {
         title: '专业资格技术',
-        dataIndex: 'recommend',
+        dataIndex: 'technicalName',
         width: 90,
-        key: 'recommend'
+        key: 'technicalName'
     },
     {
         title: '技能等级名',
-        dataIndex: 'crtime',
+        dataIndex: 'skillLevelName',
         width: 120,
-        key: 'crtime'
+        key: 'skillLevelName'
     },
     {
         title: '师徒状态',
-        dataIndex: 'uptime',
+        dataIndex: 'state',
         width: 120,
-        key: 'uptime'
+        key: 'state',
+        scopedSlots: { customRender: 'state' }
     },
     {
         title: '操作',
@@ -86,26 +88,28 @@ export const listColumns = [
     },
     {
         title: '所属单位',
-        dataIndex: 'b',
+        dataIndex: 'company',
         width: 120,
-        key: 'b'
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '学历',
-        dataIndex: 'c',
+        dataIndex: 'education',
         width: 80,
-        key: 'c'
+        key: 'education'
     },
     {
         title: '配对日期',
-        dataIndex: 'c',
-        width: 80,
-        key: 'c'
+        dataIndex: 'foundTime',
+        width: 100,
+        key: 'foundTime'
     },
     {
         title: '师徒状态',
-        dataIndex: 'c',
+        dataIndex: 'isGraduation',
         width: 80,
-        key: 'c'
+        key: 'isGraduation',
+        scopedSlots: { customRender: 'state' }
     }
 ]
