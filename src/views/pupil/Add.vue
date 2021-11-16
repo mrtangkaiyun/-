@@ -153,10 +153,10 @@ import moment from 'moment'
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
 import { save, load } from '@/api/master'
-import { sexOptions, nationOptions, faceOptions, recordOptions, companyOptions, cardOneOptions, cardTwoOptions} from '@/utils/option'
+import { sexOptions, nationOptions, faceOptions, recordOptions, companyOptions, cardOneOptions, cardTwoOptions } from '@/utils/option'
 export default {
   mixins: [model, rules],
-  data() {
+  data () {
     return {
       cardOneOptions,
       cardTwoOptions,
@@ -166,7 +166,7 @@ export default {
       faceOptions,
       recordOptions,
       classOptions: [],
-      formInit: { 
+      formInit: {
         number: null,
         name: null,
         company: null,
@@ -184,7 +184,7 @@ export default {
         technicalId: null,
         skillLevelId: null,
         other: null
-      },
+      }
     }
   },
   computed: {
@@ -193,16 +193,16 @@ export default {
       return type === 'detail'
     }
   },
-  created() {
+  created () {
     const { type } = this.data
-    const title = type === 'add' ? '师傅新增' :  type === 'edit' ? '师傅修改' : '师傅详情'
+    const title = type === 'add' ? '师傅新增' : type === 'edit' ? '师傅修改' : '师傅详情'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
     if (type === 'edit' || type === 'detail') {
       this.fetchInfo()
     }
   },
   methods: {
-    fetchInfo() {
+    fetchInfo () {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 0) {
@@ -212,7 +212,7 @@ export default {
         }
       })
     },
-    handleSubmit(e) {
+    handleSubmit (e) {
       e.preventDefault()
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -233,8 +233,8 @@ export default {
           this.$message.warning('请完善上面必填信息')
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

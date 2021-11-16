@@ -7,27 +7,28 @@ export const columns = [
     },
     {
         title: '师傅名称',
-        dataIndex: 'commodityName',
+        dataIndex: 'masterName',
         width: 120,
-        key: 'commodityName'
+        key: 'masterName'
     },
     {
         title: '徒弟名称',
-        dataIndex: 'a',
+        dataIndex: 'studentName',
         width: 100,
-        key: 'a'
+        key: 'studentName'
     },
     {
         title: '师徒状态',
-        dataIndex: 'currentPrice',
+        dataIndex: 'isGraduationVo',
         width: 100,
-        key: 'currentPrice'
+        key: 'isGraduationVo',
+        scopedSlots: { customRender: 'isGraduationVo' }
     },
     {
         title: '师徒匹配日期',
-        dataIndex: 'uptime',
+        dataIndex: 'foundTime',
         width: 100,
-        key: 'uptime'
+        key: 'foundTime'
     },
     {
         title: '操作',
@@ -40,9 +41,9 @@ export const columns = [
 
 export const searchData = [
     [
-        { type: 'input', key: 'commodityName', label: '师傅姓名', placeholder: '请输入姓名' },
-        { type: 'input', key: 'commodityName', label: '徒弟姓名', placeholder: '请输入姓名' },
-        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '是', value: 'Y' }, { label: '否', value: 'N' }] },
+        { type: 'input', key: 'masterName', label: '师傅姓名', placeholder: '请输入姓名' },
+        { type: 'input', key: 'studentName', label: '徒弟姓名', placeholder: '请输入姓名' },
+        { type: 'select', key: 'isGraduationVo', label: '师徒状态', placeholder: '请选择', options: [{ label: '已出师', value: '1' }, { label: '未出师', value: '2' }] },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],
@@ -60,32 +61,33 @@ export const listColumns = [
     },
     {
         title: '姓名',
-        dataIndex: 'a',
+        dataIndex: 'name',
         width: 80,
-        key: 'a'
+        key: 'name'
     },
     {
         title: '所属单位',
-        dataIndex: 'b',
-        width: 120,
-        key: 'b'
+        dataIndex: 'company',
+        width: 100,
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '学历',
-        dataIndex: 'c',
-        width: 80,
-        key: 'c'
+        dataIndex: 'education',
+        width: 100,
+        key: 'education'
     },
     {
         title: '配对日期',
-        dataIndex: 'c',
+        dataIndex: 'foundTime',
         width: 80,
-        key: 'c'
+        key: 'foundTime'
     },
     {
         title: '师徒状态',
-        dataIndex: 'c',
+        dataIndex: 'state',
         width: 80,
-        key: 'c'
+        key: 'state'
     }
 ]

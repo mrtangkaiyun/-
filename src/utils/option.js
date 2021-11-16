@@ -152,7 +152,7 @@ export const departmentOptions = [
     {
         label: '所属部门',
         value: '1'
-    } 
+    }
 ]
 export const companyOptions = [
     {
@@ -211,7 +211,7 @@ export const companyOptions = [
     }
 ]
 
-export const cardOneOptions =[
+export const cardOneOptions = [
     {
         label: '员级',
         value: '1'
@@ -253,7 +253,7 @@ export const cardTwoOptions = [
     }
 ]
 
-export const issuerOptions = [ 
+export const issuerOptions = [
     {
         label: '师傅',
         value: '师傅'

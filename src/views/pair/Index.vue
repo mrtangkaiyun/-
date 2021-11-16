@@ -3,13 +3,13 @@
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
         <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @pair="pair"></search-bar>
-        <div class="delete-box">
+        <!-- <div class="delete-box">
           <popconfirm-button custom :data="record" @click="clickDeleteSelect">
             <a-button :disabled="!selectedRowKeys || selectedRowKeys.length === 0" type="danger">
               删除
             </a-button>
           </popconfirm-button>
-        </div>
+        </div> -->
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -23,6 +23,9 @@
         >
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
+          </template>
+          <template slot="isGraduationVo" slot-scope="isGraduationVo">
+            {{ isGraduationVo == 1 ? '已出师' : '未出师' }}
           </template>
           <span slot="action" slot-scope="text, record">
             <popconfirm-button custom :data="record" @click="clickDelete">
@@ -38,7 +41,7 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list, remove } from '@/api/goods'
+import { list, remove } from '@/api/pair'
 import model from '@/public/indexModel.js'
 import Add from './Add'
 export default {
@@ -50,18 +53,25 @@ export default {
   data () {
     return {
       columns,
-      searchData
+      searchData,
+      row: null
     }
   },
   created () {
     this.fetchData()
   },
   methods: {
+    onSelectChange (selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
+      const id = this.selectedRowKeys[this.selectedRowKeys.length - 1]
+      this.row = this.table.data.find(e => (e.id === id))
+      console.log(this.row)
+    },
     pair () {
       if (!this.selectedRowKeys || this.selectedRowKeys.length === 0) {
         this.clickAdd()
       } else if (this.selectedRowKeys.length === 1) {
-        this.clickUpdate({ })
+        this.clickUpdate(this.row)
       } else {
         this.$message.warning('请选择一条数据进行师徒匹配')
       }
@@ -69,24 +79,27 @@ export default {
     fetchData (params = {}) {
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
-        params.currentPage = current
-        params.currentSize = pageSize
+        params.pageNum = current
+        params.pageSize = pageSize
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }
     },
-    clickDeleteSelect () {
-      const { selectedRowKeys } = this
-    },
+    // clickDeleteSelect () {
+    //   const { selectedRowKeys } = this
+    // },
     clickDelete (record) {
-      remove(record.id).then(({ code }) => {
-        if (code === 1) {
+      const param = {
+        id: record.id
+      }
+      remove(param).then(({ code }) => {
+        if (code === 0) {
           this.$message.success('删除成功')
           this.conditionPage()
           this.fetchData(this.params)

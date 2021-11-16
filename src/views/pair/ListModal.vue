@@ -19,7 +19,7 @@
           :loading="table.loading"
           :pagination="pagination"
           @change="handleTabChange"
-          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+          :row-selection="{ type: 'radio', selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :scroll="{ x: 600, y: 800 }"
         >
           <template slot="index" slot-scope="index, record, i">
@@ -38,46 +38,52 @@
 import model from '@/public/addModel.js'
 import indexModel from '@/public/indexModel.js'
 import { listColumns } from './js/index'
-import { load } from '@/api/goods'
+import { list } from '@/api/master'
 export default {
   mixins: [model, indexModel],
   data () {
     return {
-        columns: listColumns
+        columns: listColumns,
+        selectedRows: []
     }
   },
   created () {
-    console.log(1234561111)
     const { obj, type } = this.data
+    console.log(obj, type, 7777777)
     const title = type === 1 ? '师傅列表' : '徒弟列表'
-    console.log(type, 1234561111)
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
-    this.selectedRowKeys = obj
-    if (type === 1) {
-      // this.fetchData()
-    } else {
-      // this.fetchData()
-    }
+    this.selectedRowKeys = obj ? [obj.id] : []
+    this.selectedRows = obj ? [obj] : []
+    this.fetchData()
   },
   methods: {
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
     fetchData (params = {}) {
+      const { type } = this.data
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
-        params.currentPage = current
-        params.currentSize = pageSize
+        params.pageNum = current
+        params.pageSize = pageSize
+        params.type = type
         this.table.loading = true
-        load(params).then(({ code, data }) => {
+        list(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }
     },
     confirm () {
-       const { type } = this.data
-      this.$emit('confirm', this.selectedRowKeys, type)
+      const { type } = this.data
+      if (!this.selectedRows.length) {
+        return this.$message.warning('请选择一条数据')
+      }
+      this.$emit('confirm', this.selectedRows[0], type)
       this.closeDialog()
     }
   }

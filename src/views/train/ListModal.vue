@@ -19,7 +19,7 @@
         </a-radio-group>
       </div>
       <div class="text-center padding-t-50">
-          <a-button @click="confirm"> 确定 </a-button>
+        <a-button @click="confirm"> 确定 </a-button>
       </div>
     </a-modal>
   </div>
@@ -32,13 +32,13 @@ import { listColumns } from './js/index'
 import { load } from '@/api/goods'
 export default {
   mixins: [model, indexModel],
-  data() {
+  data () {
     return {
       columns: listColumns,
       value: 'a'
     }
   },
-  created() {
+  created () {
     const { obj } = this.data
     this.value = obj.value || 'a'
     const title = '任务执行人'
@@ -46,7 +46,7 @@ export default {
     this.fetchInfo()
   },
   methods: {
-    fetchInfo() {
+    fetchInfo () {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 1) {
@@ -61,7 +61,7 @@ export default {
       this.$emit('confirm', this.value, type)
       this.closeDialog()
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

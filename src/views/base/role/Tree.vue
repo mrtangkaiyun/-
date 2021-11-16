@@ -10,17 +10,17 @@
       :maskClosable="false"
       width="500px"
     >
-    {{checkedKeys}}
+      {{ checkedKeys }}
       <a-tree
-            v-model="checkedKeys"
-            checkable
-            :expanded-keys="expandedKeys"
-            :auto-expand-parent="autoExpandParent"
-            :selected-keys="selectedKeys"
-            :tree-data="treeData"
-            @expand="onExpand"
-            @select="onSelect"
-        />
+        v-model="checkedKeys"
+        checkable
+        :expanded-keys="expandedKeys"
+        :auto-expand-parent="autoExpandParent"
+        :selected-keys="selectedKeys"
+        :tree-data="treeData"
+        @expand="onExpand"
+        @select="onSelect"
+      />
       <div class="text-center">
         <a-button @click="closeDialog"> 取消 </a-button>
         <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">确定</a-button>
@@ -35,7 +35,7 @@ import { load } from '@/api/goods'
 import { treeData } from '@/utils/auth'
 export default {
   mixins: [model],
-  data() {
+  data () {
     return {
       expandedKeys: ['0-0-0', '0-0-1'],
       autoExpandParent: true,
@@ -44,7 +44,7 @@ export default {
       treeData
     }
   },
-  created() {
+  created () {
     console.log(123456)
     const title = '勾选权限'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
@@ -61,23 +61,23 @@ export default {
     //     }
     //   })
     // },
-    handleSubmit() {},
-    onExpand(expandedKeys) {
-      console.log('onExpand', expandedKeys);
+    handleSubmit () {},
+    onExpand (expandedKeys) {
+      console.log('onExpand', expandedKeys)
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded children keys.
-      this.expandedKeys = expandedKeys;
-      this.autoExpandParent = false;
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
     },
-    onCheck(checkedKeys) {
-      console.log('onCheck', checkedKeys);
-      this.checkedKeys = checkedKeys;
+    onCheck (checkedKeys) {
+      console.log('onCheck', checkedKeys)
+      this.checkedKeys = checkedKeys
     },
-    onSelect(selectedKeys, info) {
-      console.log('onSelect', info);
-      this.selectedKeys = selectedKeys;
+    onSelect (selectedKeys, info) {
+      console.log('onSelect', info)
+      this.selectedKeys = selectedKeys
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

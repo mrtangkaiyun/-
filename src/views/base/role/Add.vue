@@ -46,30 +46,30 @@ import TreeModal from './Tree.vue'
 export default {
   mixins: [model, rules],
   components: { TreeModal },
-  data() {
+  data () {
     return {
       formInit: { name: null },
       roleList: [
         {
           name: 'admin',
-          id: 'admin',
+          id: 'admin'
         },
         {
           name: 'sf',
-          id: '2',
+          id: '2'
         },
         {
           name: 'td',
-          id: '3',
-        },
+          id: '3'
+        }
       ],
       listObj: {
         visiable: false,
-        data: null,
-      },
+        data: null
+      }
     }
   },
-  created() {
+  created () {
     const { type } = this.data
     const title = type === 'add' ? '角色新增' : '角色修改'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
@@ -78,13 +78,13 @@ export default {
     }
   },
   methods: {
-    confirmTree() {
+    confirmTree () {
 
     },
-    clickTree() {
+    clickTree () {
       this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'tree', obj: {} } })
     },
-    fetchInfo() {
+    fetchInfo () {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 1) {
@@ -94,7 +94,7 @@ export default {
         }
       })
     },
-    handleSubmit(e) {
+    handleSubmit (e) {
       e.preventDefault()
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -113,8 +113,8 @@ export default {
           this.$message.warning('请完善上面必填信息')
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

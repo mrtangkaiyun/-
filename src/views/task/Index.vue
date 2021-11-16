@@ -65,14 +65,14 @@ export default {
     fetchData (params = {}) {
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
-        params.currentPage = current
-        params.currentSize = pageSize
+        params.pageNum = current
+        params.pageSize = pageSize
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }

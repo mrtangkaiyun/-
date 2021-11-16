@@ -68,10 +68,10 @@ request.interceptors.request.use(config => {
 // response interceptor
 request.interceptors.response.use((response) => {
   let { data: { code, message, status } } = response
-  if(code && code == '200') {
+  if (code && code == '200') {
     code = 0
     response.data.code = 0
-  } else if(code === '0' || code === 0) {
+  } else if (code === '0' || code === 0) {
     code = 200
     response.data.code = 200
   }
