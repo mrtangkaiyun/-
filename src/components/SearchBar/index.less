@@ -1,0 +1,23 @@
+ .search-bar {
+  padding-left: 16px;
+  padding-top: 4px;
+  padding-right: 16px;
+  display: flex;
+  justify-content: space-between;
+  .left {
+    display: inline-block;
+    margin: 0 12px 8px 0;
+    &:last-child{
+      margin-right: 0;
+    }
+    .ant-input-affix-wrapper{
+      width: auto;
+    }
+    .ant-input, .ant-select, .ant-calendar-picker{
+      width: 150px;
+    }
+    .range-picker{
+      width: 250px;
+    }
+  }
+}
