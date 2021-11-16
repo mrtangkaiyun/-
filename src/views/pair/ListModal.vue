@@ -11,6 +11,7 @@
       width="800px"
     >
       <div>
+        <search-bar ref="searchbar" :data="searchData" @search="clickSearch"></search-bar>
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -25,6 +26,9 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
+          <template slot="company" slot-scope="company">
+            {{ valueToLabelOption('companyOptions', company) }}
+          </template>
         </a-table>
         <div class="text-center padding-t-50">
           <a-button @click="confirm"> 确定 </a-button>
@@ -37,12 +41,14 @@
 <script>
 import model from '@/public/addModel.js'
 import indexModel from '@/public/indexModel.js'
-import { listColumns } from './js/index'
+import { listColumns, listSearchData } from './js/index'
 import { list } from '@/api/master'
+import { valueToLabelOption } from '@/utils/option'
 export default {
   mixins: [model, indexModel],
   data () {
     return {
+        searchData: listSearchData,
         columns: listColumns,
         selectedRows: []
     }
@@ -57,6 +63,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    valueToLabelOption,
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows

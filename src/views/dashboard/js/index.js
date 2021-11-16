@@ -8,39 +8,40 @@ export const columns = [
     },
     {
         title: '员工编号',
-        dataIndex: 'commodityName',
+        dataIndex: 'number',
         width: 120,
-        key: 'commodityName'
+        key: 'number'
     },
     {
         title: '姓名',
-        dataIndex: 'a',
+        dataIndex: 'name',
         width: 100,
-        key: 'a'
+        key: 'name'
     },
     {
         title: '所属单位',
-        dataIndex: 'currentPrice',
+        dataIndex: 'company',
         width: 100,
-        key: 'currentPrice'
+        key: 'company',
+        scopedSlots: { customRender: 'company' }
     },
     {
         title: '带徒次数',
-        dataIndex: 'originalPrice',
+        dataIndex: 'size',
         width: 100,
-        key: 'originalPrice'
+        key: 'size'
     },
     {
         title: '未出师',
-        dataIndex: 'recommend',
+        dataIndex: 'ngraduation',
         width: 90,
-        key: 'recommend'
+        key: 'ngraduation'
     },
     {
         title: '已出师',
-        dataIndex: 'crtime',
+        dataIndex: 'ygraduation',
         width: 120,
-        key: 'crtime'
+        key: 'ygraduation'
     }
 ]
 

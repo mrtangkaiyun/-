@@ -1,3 +1,4 @@
+import { companyOptions } from '@/utils/option'
 export const columns = [
     {
         title: '序号',
@@ -90,4 +91,15 @@ export const listColumns = [
         width: 80,
         key: 'state'
     }
+]
+
+export const listSearchData = [
+    [
+        { type: 'input', key: 'name', label: '姓名', placeholder: '请输入姓名' },
+        { type: 'select', key: 'company', label: '所属单位', placeholder: '请选择', options: companyOptions },
+        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '空闲 ', value: '1' }, { label: '带徒中', value: '2' }] },
+        { type: 'search', name: '查询' },
+        { type: 'reset', name: '重置' }
+    ],
+    [ ]
 ]

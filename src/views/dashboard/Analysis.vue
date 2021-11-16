@@ -2,7 +2,7 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @import="importFile" @add="clickAdd"></search-bar>
+        <search-bar ref="searchbar" :data="searchData" @search="clickSearch"></search-bar>
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -17,6 +17,9 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
+          <template slot="company" slot-scope="company">
+            {{ valueToLabelOption('companyOptions', company) }}
+          </template>
         </a-table>
       </div>
     </a-card>
@@ -25,8 +28,9 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list, remove } from '@/api/goods'
+import { list } from '@/api/analysis'
 import model from '@/public/indexModel.js'
+import { valueToLabelOption } from '@/utils/option'
 export default {
   name: 'Analysis',
   mixins: [model],
@@ -40,17 +44,18 @@ export default {
     this.fetchData()
   },
   methods: {
+    valueToLabelOption,
     fetchData (params = {}) {
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
-        params.currentPage = current
-        params.currentSize = pageSize
+        params.pageNum = current
+        params.pageSize = pageSize
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }
