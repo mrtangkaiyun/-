@@ -24,9 +24,9 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="isGraduation" slot-scope="isGraduation">
+          <!-- <template slot="isGraduation" slot-scope="isGraduation">
             {{ isGraduation == 1 ? '已出师' : '未出师' }}
-          </template>
+          </template> -->
           <span slot="action" slot-scope="text, record">
             <popconfirm-button custom :data="record" @click="clickDelete">
               <a-button type="danger" shape="circle" icon="delete"/>

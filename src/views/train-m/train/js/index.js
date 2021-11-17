@@ -21,8 +21,7 @@ export const columns = [
         title: '师徒状态',
         dataIndex: 'isGraduation',
         width: 100,
-        key: 'isGraduation',
-        scopedSlots: { customRender: 'isGraduation' }
+        key: 'isGraduation'
     },
     {
         title: '师徒匹配日期',
@@ -49,9 +48,9 @@ export const columns = [
 
 export const searchData = [
     [
-        { type: 'input', key: 'commodityName', label: '师傅姓名', placeholder: '请输入姓名' },
-        { type: 'input', key: 'commodityName', label: '徒弟姓名', placeholder: '请输入姓名' },
-        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '是', value: 'Y' }, { label: '否', value: 'N' }] },
+        { type: 'input', key: 'masterName', label: '师傅姓名', placeholder: '请输入姓名' },
+        { type: 'input', key: 'studentName', label: '徒弟姓名', placeholder: '请输入姓名' },
+        { type: 'select', key: 'isGraduationVo', label: '师徒状态', placeholder: '请选择', options: [{ label: '已出师', value: '1' }, { label: '未出师', value: '2' }] },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],

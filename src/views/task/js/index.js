@@ -52,8 +52,8 @@ export const columns = [
 
 export const searchData = [
     [
-        { type: 'input', key: 'commodityName', label: '任务名称', placeholder: '请输入' },
-        { type: 'select', key: 'recommend', label: '任务状态', placeholder: '请选择', options: [{ label: '是', value: 'Y' }, { label: '否', value: 'N' }] },
+        { type: 'input', key: 'taskName', label: '任务名称', placeholder: '请输入' },
+        { type: 'select', key: 'taskStatusVo', label: '任务状态', placeholder: '请选择', options: [{ label: '未开始', value: '1' }, { label: '已开始', value: '2' }, { label: '已结束', value: '3' }] },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],

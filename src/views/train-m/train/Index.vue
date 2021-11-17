@@ -24,9 +24,6 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="isGraduation" slot-scope="isGraduation">
-            {{ isGraduation == 1 ? '已出师' : '未出师' }}
-          </template>
           <template slot="action" slot-scope="text, record">
             <!-- {{ rr }} 1  -->
             <a-button type="primary" size="small" shape="circle" icon="menu" @click="clickListRecord(record)"/>

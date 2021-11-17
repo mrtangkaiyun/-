@@ -62,7 +62,7 @@
         <a-row>
           <a-col :span="15">
             <a-form-model-item label="执行反馈说明">
-              <a-textarea :disabled="!isDetail" placeholder="请输入文本..." style="width:98%" v-model="formInit.feedback" :autosize="{ maxRows: 5, minRows: 5 }" />
+              <a-textarea :disabled="isDetail" placeholder="请输入文本..." style="width:98%" v-model="formInit.feedback" :autosize="{ maxRows: 5, minRows: 5 }" />
             </a-form-model-item>
           </a-col>
         </a-row>

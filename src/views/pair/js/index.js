@@ -22,8 +22,7 @@ export const columns = [
         title: '师徒状态',
         dataIndex: 'isGraduation',
         width: 100,
-        key: 'isGraduation',
-        scopedSlots: { customRender: 'isGraduation' }
+        key: 'isGraduation'
     },
     {
         title: '师徒匹配日期',

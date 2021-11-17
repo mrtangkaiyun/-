@@ -104,8 +104,8 @@ export const listColumns = [
     },
     {
         title: '师徒状态',
-        dataIndex: 'state',
+        dataIndex: 'isGraduation',
         width: 80,
-        key: 'state'
+        key: 'isGraduation'
     }
 ]
