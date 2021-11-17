@@ -26,7 +26,6 @@
           <a-col :span="6">
             <a-form-model-item label="选择徒弟" prop="studentId" :rules="rules.select">
               <a-input style="display: none" placeholder="请输入" v-model="formInit.studentId" />
-              <a-input style="display: none" placeholder="请输入" v-model="formInit.studentId" />
               <a-radio-group v-if="formInit.studentId" button-style="solid">
                 <a-radio-button style="margin: 15px" :value="formInit.studentId">
                   {{ formInit.studentName }}
@@ -88,6 +87,10 @@ export default {
     if (obj && obj.masterId) {
       this.formInit.masterId = obj.masterId
       this.formInit.masterName = obj.masterName
+    }
+    if (obj && obj.studentId) {
+      this.formInit.studentId = obj.studentId
+      this.formInit.studentName = obj.studentName
     }
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
   },

@@ -20,10 +20,9 @@ export const columns = [
     },
     {
         title: '所属单位',
-        dataIndex: 'company',
-        width: 100,
-        key: 'company',
-        scopedSlots: { customRender: 'company' }
+        dataIndex: 'companyName',
+        width: 160,
+        key: 'companyName'
     },
     {
         title: '学历',
@@ -32,7 +31,7 @@ export const columns = [
         key: 'education'
     },
     {
-        title: '专业资格技术',
+        title: '专业技术资格',
         dataIndex: 'technicalName',
         width: 90,
         key: 'technicalName'
@@ -47,8 +46,7 @@ export const columns = [
         title: '师徒状态',
         dataIndex: 'state',
         width: 120,
-        key: 'state',
-        scopedSlots: { customRender: 'state' }
+        key: 'state'
     },
     {
         title: '操作',
@@ -82,16 +80,15 @@ export const listColumns = [
     },
     {
         title: '姓名',
-        dataIndex: 'a',
+        dataIndex: 'name',
         width: 80,
-        key: 'a'
+        key: 'name'
     },
     {
         title: '所属单位',
-        dataIndex: 'company',
+        dataIndex: 'companyName',
         width: 120,
-        key: 'company',
-        scopedSlots: { customRender: 'company' }
+        key: 'companyName'
     },
     {
         title: '学历',
@@ -107,9 +104,8 @@ export const listColumns = [
     },
     {
         title: '师徒状态',
-        dataIndex: 'isGraduation',
+        dataIndex: 'status',
         width: 80,
-        key: 'isGraduation',
-        scopedSlots: { customRender: 'state' }
+        key: 'status'
     }
 ]

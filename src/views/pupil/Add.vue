@@ -114,7 +114,7 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="6">
-            <a-form-model-item label="专业资格技术名称" prop="technicalId">
+            <a-form-model-item label="专业技术资格名称" prop="technicalId">
               <a-select :disabled="isDetail" v-model="formInit.technicalId" placeholder="请选择">
                 <a-select-option v-for="item in cardOneOptions" :key="item.value" :value="item.value">
                   {{ item.label }}

@@ -7,34 +7,35 @@ export const columns = [
     },
     {
         title: '师傅名称',
-        dataIndex: 'commodityName',
+        dataIndex: 'masterName',
         width: 120,
-        key: 'commodityName'
+        key: 'masterName'
     },
     {
         title: '徒弟名称',
-        dataIndex: 'a',
+        dataIndex: 'studentName',
         width: 100,
-        key: 'a'
+        key: 'studentName'
     },
     {
         title: '师徒状态',
-        dataIndex: 'currentPrice',
+        dataIndex: 'isGraduation',
         width: 100,
-        key: 'currentPrice'
+        key: 'isGraduation',
+        scopedSlots: { customRender: 'isGraduation' }
     },
     {
-        title: '师徒配对日期',
-        dataIndex: 'originalPrice',
+        title: '师徒匹配日期',
+        dataIndex: 'foundTime',
         width: 100,
-        key: 'originalPrice'
+        key: 'foundTime'
     },
     {
         title: '任务个数',
-        dataIndex: 'rr',
+        dataIndex: 'action',
         width: 90,
-        key: 'rr',
-        scopedSlots: { customRender: 'rr' }
+        key: 'action',
+        scopedSlots: { customRender: 'action' }
     }
     // ,
     // {

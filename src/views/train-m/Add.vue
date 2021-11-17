@@ -14,24 +14,24 @@
         <a-row>
           <a-col :span="8">
             <a-form-model-item label="任务名称" prop="taskName">
-              <a-input disabled placeholder="请输入" v-model="taskExecutorObj.taskName" />
+              <a-input placeholder="请输入" v-model="formInit.taskName" />
             </a-form-model-item>
           </a-col>
           <a-col :span="6">
             <a-form-model-item label="任务截至日期" prop="endTime">
-              <a-date-picker disabled v-model="taskExecutorObj.endTime" />
+              <a-date-picker v-model="formInit.endTime" />
             </a-form-model-item>
           </a-col>
           <a-col :span="6">
             <a-form-model-item label="发布日期" prop="startTime">
-              <a-date-picker disabled v-model="taskExecutorObj.startTime" />
+              <a-date-picker v-model="formInit.startTime" />
             </a-form-model-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col :span="8">
             <a-form-model-item label="发布人" prop="publisher">
-              <a-input style="display:none" placeholder="请输入" v-model="taskExecutorObj.publisher" />
+              <a-input style="display:none" placeholder="请输入" v-model="formInit.publisher" />
               <a-input disabled placeholder="请输入" :value="publisherName" />
               <!-- <a-select v-model="formInit.sex" placeholder="请选择">
                 <a-select-option v-for="item in issuerOptions" :key="item.value" :value="item.value">
@@ -40,14 +40,17 @@
               </a-select> -->
             </a-form-model-item>
           </a-col>
-          <a-col :span="8">
-            <a-form-model-item label="任务状态" prop="publisher">
-              <a-input disabled placeholder="请输入" v-model="taskExecutorObj.taskStatus" />
-            </a-form-model-item>
-          </a-col>
           <a-col :span="6">
             <a-form-model-item label="任务执行人" prop="taskExecutor">
-              <a-input disabled placeholder="请输入" v-model="taskExecutorObj.studentName" />
+              <a-input style="display: none" placeholder="请输入" v-model="formInit.taskExecutor" />
+              <a-radio-group v-if="formInit.taskExecutor" button-style="solid">
+                <a-radio-button style="margin: 15px" :value="formInit.taskExecutor">
+                  {{ taskExecutorObj.studentName }}
+                </a-radio-button>
+              </a-radio-group>
+              <a-button @click="clickListModal()">
+                <a-icon type="plus" />点击选择
+              </a-button>
             </a-form-model-item>
           </a-col>
         </a-row>
@@ -55,14 +58,14 @@
         <a-row>
           <a-col :span="15">
             <a-form-model-item label="任务要求" prop="taskDemand">
-              <a-textarea disabled placeholder="请输入文本..." style="width:98%" v-model="taskExecutorObj.taskDemand" :autosize="{ maxRows: 5, minRows: 5 }" />
+              <a-textarea placeholder="请输入文本..." style="width:98%" v-model="formInit.taskDemand" :autosize="{ maxRows: 5, minRows: 5 }" />
             </a-form-model-item>
           </a-col>
         </a-row>
-        <a-row>
+        <a-row v-if="isEdit || isDetail">
           <a-col :span="15">
             <a-form-model-item label="执行反馈说明">
-              <a-textarea :disabled="!isDetail" placeholder="请输入文本..." style="width:98%" v-model="formInit.feedback" :autosize="{ maxRows: 5, minRows: 5 }" />
+              <a-textarea disabled placeholder="请输入文本..." style="width:98%" v-model="formInitInfo.feedback" :autosize="{ maxRows: 5, minRows: 5 }" />
             </a-form-model-item>
           </a-col>
         </a-row>
@@ -71,8 +74,7 @@
           <a-col :span="15">
             <a-form-model-item label="结果资料">
               <div style="width:98%">
-                <a-upload
-                  v-if="isEdit"
+                <!-- <a-upload
                   ref="upxlsx"
                   name="file"
                   :multiple="true"
@@ -82,7 +84,7 @@
                   <a-button>
                     <a-icon type="upload" />文件上传
                   </a-button>
-                </a-upload>
+                </a-upload> -->
                 <a-table
                   :columns="columns"
                   :dataSource="table.data"
@@ -94,8 +96,8 @@
                   </template>
                   <span slot="action" slot-scope="text, record">
                     <a href="javascript:;" @click="clickDownLoad(record)">下载</a>
-                    <a-divider v-if="isEdit" type="vertical" />
-                    <popconfirm-button v-if="isEdit" :data="record" @click="clickDelete"></popconfirm-button>
+                    <!-- <a-divider type="vertical" />
+                    <popconfirm-button :data="record" @click="clickDelete"></popconfirm-button> -->
                   </span>
                 </a-table>
               </div>
@@ -108,6 +110,7 @@
           <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
         </div>
       </a-form-model>
+      <list-modal v-if="listObj.visiable" v-model="listObj.visiable" :data="listObj.data" @confirm="confirmSelected"></list-modal>
     </a-modal>
   </div>
 </template>
@@ -121,8 +124,10 @@ import { saveAdd, saveEdit, load } from '@/api/train'
 import { editColumns } from './js/index'
 import { downLoadExcel } from '@/utils/util'
 import { issuerOptions } from '@/utils/option'
+import ListModal from './ListModal.vue'
 export default {
   mixins: [model, rules, indexModel],
+  components: { ListModal },
   data () {
     return {
       taskExecutorObj: { },
@@ -141,7 +146,11 @@ export default {
 
       },
       columns: editColumns,
-      issuerOptions
+      issuerOptions,
+      listObj: {
+        visiable: false,
+        data: null
+      }
     }
   },
   computed: {
@@ -160,13 +169,12 @@ export default {
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
     if (type === 'edit' || type === 'detail') {
       this.fetchInfo()
+    } else {
+      if (obj) {
+        this.publisherName = obj.masterName
+        this.formInit.publisher = obj.masterId
+      }
     }
-    //  else {
-    //   if (obj) {
-    //     this.publisherName = obj.masterName
-    //     this.formInit.publisher = obj.masterId
-    //   }
-    // }
   },
   methods: {
     fetchInfo () {
@@ -175,14 +183,22 @@ export default {
         if (code === 0) {
           this.taskExecutorObj = {
             studentName: data.taskExecutorName,
-            studentId: data.taskExecutor,
-            ...data
+            studentId: data.taskExecutor
           }
           this.originalData = this.$copy(data)
           this.formInitInfo = this.$copy(data)
           this.$setOriginalKV(this.formInit, data)
         }
       })
+    },
+    clickListModal () {
+      const { obj } = this.data
+      const maaId = obj ? obj.masterId : null
+      let rowobj = null
+      if (this.formInit.taskExecutor) {
+        rowobj = this.$copy(this.taskExecutorObj)
+      }
+      this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'select', maaId, obj: rowobj } })
     },
     confirmSelected (selected) {
       this.taskExecutorObj = selected

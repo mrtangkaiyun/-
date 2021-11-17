@@ -2,14 +2,14 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @graduation="graduation" @task="task"></search-bar>
-        <div class="delete-box">
+        <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @taskStart="taskStartAndEnd(1)" @taskEnd="taskStartAndEnd(2)"></search-bar>
+        <!-- <div class="delete-box">
           <popconfirm-button custom :data="record" @click="clickDeleteSelect">
             <a-button :disabled="!selectedRowKeys || selectedRowKeys.length === 0" type="danger">
               删除
             </a-button>
           </popconfirm-button>
-        </div>
+        </div> -->
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -18,25 +18,23 @@
           :loading="table.loading"
           :pagination="pagination"
           @change="handleTabChange"
-          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+          :row-selection="{ type: 'radio', selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :scroll="{ x: 900 }"
         >
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="rr" slot-scope="rr">
-            <!-- {{ rr }} 1  -->
-            <a-button type="primary" size="small" shape="circle" icon="menu" @click="clickListRecord(record)"/>
-          </template>
-          <!-- <span slot="action" slot-scope="text, record">
+          <span slot="action" slot-scope="text, record">
             <a-button type="primary" shape="circle" icon="form" @click="clickUpdate(record)"/>
             <a-divider type="vertical" />
             <a-button type="primary" shape="circle" icon="menu" @click="clickListRecord(record)"/>
             <a-divider type="vertical" />
+            <a-button type="primary" shape="circle" icon="info" @click="clickDetail(record)"/>
+            <a-divider type="vertical" />
             <popconfirm-button custom :data="record" @click="clickDelete">
-               <a-button type="danger" shape="circle" icon="delete"/>
+              <a-button type="danger" shape="circle" icon="delete"/>
             </popconfirm-button>
-          </span> -->
+          </span>
         </a-table>
       </div>
     </a-card>
@@ -47,12 +45,13 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list, remove } from '@/api/goods'
+import { taskList, levelRemove, startAndEndTask } from '@/api/train'
 import model from '@/public/indexModel.js'
 import ListModal from './ListModal'
-import Add from './Add'
+// import Add from '../../task/Add.vue'
+import Add from '../Add.vue'
 export default {
-  name: 'Master',
+  name: 'Implement',
   mixins: [model],
   components: {
     Add,
@@ -60,6 +59,7 @@ export default {
   },
   data () {
     return {
+      id: null,
       columns,
       searchData,
       listObj: {
@@ -69,48 +69,59 @@ export default {
     }
   },
   created () {
+    this.id = this.$route.query.id
     this.fetchData()
   },
   methods: {
+    taskStartAndEnd (v) {
+      if (this.selectedRowKeys && this.selectedRowKeys.length >= 1) {
+        const id = this.selectedRowKeys[0]
+        const row = this.table.data.find(e => (e.id === id))
+        startAndEndTask({ id, state: row.state }).then(({ code, message }) => {
+          if (code === 0) {
+            this.$message.success(message || '操作成功')
+            this.conditionPage()
+            this.fetchData(this.params)
+            this.selectedRowKeys = []
+          }
+        })
+      } else {
+        this.$message.warning('请选择一条数据')
+      }
+    },
     fetchData (params = {}) {
       if (!this.table.loading) {
         const { current, pageSize } = this.pagination
-        params.currentPage = current
-        params.currentSize = pageSize
+        params.pageNum = current
+        params.pageSize = pageSize
+        params.id = this.id
         this.table.loading = true
-        list(params).then(({ code, data }) => {
+        taskList(params).then(({ code, data }) => {
           this.table.loading = false
-          if (code === 1) {
+          if (code === 0) {
             this.pagination.total = data.total
-            this.table.data = data.records
+            this.table.data = data.rows
           }
         })
       }
     },
-    clickDeleteSelect () {
-      const { selectedRowKeys } = this
-    },
+    // clickDeleteSelect () {
+    //   const { selectedRowKeys } = this
+    // },
     clickDelete (record) {
-      remove(record.id).then(({ code }) => {
-        if (code === 1) {
+      levelRemove(record.id).then(({ code }) => {
+        if (code === 0) {
           this.$message.success('删除成功')
           this.conditionPage()
           this.fetchData(this.params)
         }
       })
     },
-    graduation () { // 已出师
-      if (this.selectedRowKeys && this.selectedRowKeys.length >= 1) {
-        this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'list', obj: { } } })
-      } else {
-        this.$message.warning('请选择最少一条数据')
-      }
-    },
-    task () { // 任务发布
-      this.clickAdd()
+    clickDetail (record) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'detail', obj: record } })
     },
     clickListRecord (record) {
-      this.$router.push('/implement')
+      this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'list', obj: record } })
     },
     importFile () {
       this.$refs['upxlsx'].$el.getElementsByTagName('input')[0].click()
@@ -118,7 +129,7 @@ export default {
     customRequest (e) {
       const form = new FormData()
       form.append('file', e.file)
-      remove(form).then(({ code, message }) => {
+      levelRemove(form).then(({ code, message }) => {
         if (code === 0) {
           this.$refs.table.refresh()
           this.$message.success(message || '导入成功')

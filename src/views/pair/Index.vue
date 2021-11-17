@@ -18,14 +18,14 @@
           :loading="table.loading"
           :pagination="pagination"
           @change="handleTabChange"
-          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+          :row-selection="{ type: 'radio', selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :scroll="{ x: 900 }"
         >
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="isGraduationVo" slot-scope="isGraduationVo">
-            {{ isGraduationVo == 1 ? '已出师' : '未出师' }}
+          <template slot="isGraduation" slot-scope="isGraduation">
+            {{ isGraduation == 1 ? '已出师' : '未出师' }}
           </template>
           <span slot="action" slot-scope="text, record">
             <popconfirm-button custom :data="record" @click="clickDelete">

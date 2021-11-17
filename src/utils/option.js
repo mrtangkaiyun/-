@@ -157,57 +157,57 @@ export const departmentOptions = [
 export const companyOptions = [
     {
         label: '国网湖北省电力有限公司武汉供电公司',
-        value: '1'
+        value: 1
     },
     {
         label: '国网湖北省电力有限公司荆州供电公司',
-        value: '2'
+        value: 2
     },
     {
         label: '国网湖北省电力有限公司黄石供电公司',
-        value: '3'
+        value: 3
     },
     {
         label: '国网湖北省电力有限公司宜昌供电公司',
-        value: '4'
+        value: 4
     },
     {
         label: '国网湖北省电力有限公司襄阳供电公司',
-        value: '5'
+        value: 5
     },
     {
         label: '国网湖北省电力有限公司孝感供电公司',
-        value: '6'
+        value: 6
     },
     {
         label: '国网湖北省电力有限公司荆门供电公司',
-        value: '7'
+        value: 7
     },
     {
         label: '国网湖北省电力有限公司黄冈供电公司',
-        value: '8'
+        value: 8
     }, {
         label: '国网湖北省电力有限公司鄂州供电公司',
-        value: '9'
+        value: 9
     },
     {
         label: '国网湖北省电力有限公司咸宁供电公司',
-        value: '10'
+        value: 10
     },
     {
         label: '国网湖北省电力有限公司十堰供电公司',
-        value: '11'
+        value: 11
     },
     {
         label: '国网湖北省电力有限公司随州供电公司',
-        value: '12'
+        value: 12
     }, {
         label: '国网湖北省电力有限公司恩施供电公司',
-        value: '13'
+        value: 13
     },
     {
         label: '国网湖北省电力有限公司神农架供电公司',
-        value: '14'
+        value: 14
     }
 ]
 
@@ -261,6 +261,7 @@ export const issuerOptions = [
  ]
 
  export const valueToLabelOption = function (name, value) {
-    const obj = [name].find(e => (e.value === value))
+    console.log(111, name, value)
+    const obj = [name].find(e => (e.value === value || e.value === value.toString()))
     return obj ? obj.value : ''
 }

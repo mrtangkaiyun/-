@@ -18,13 +18,12 @@
           :loading="table.loading"
           :pagination="pagination"
           @change="handleTabChange"
-          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :scroll="{ x: 900 }"
         >
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="company" slot-scope="company">
+          <!-- <template slot="company" slot-scope="company">
             {{ valueToLabelOption('companyOptions', company) }}
           </template>
           <template slot="state" slot-scope="state">
@@ -32,7 +31,7 @@
           </template>
           <template slot="company" slot-scope="company">
             {{ valueToLabelOption('companyOptions', company) }}
-          </template>
+          </template> -->
           <span slot="action" slot-scope="text, record">
             <!-- <a-icon @click="clickUpdate(record)" type="form" /> -->
             <a-button type="primary" shape="circle" icon="form" @click="clickUpdate(record)"/>
@@ -99,6 +98,7 @@ export default {
         const { current, pageSize } = this.pagination
         params.pageNum = current
         params.pageSize = pageSize
+        params.isType = '师傅'
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
@@ -141,8 +141,6 @@ export default {
         if (code === 0) {
           this.$refs.table.refresh()
           this.$message.success(message || '导入成功')
-        } else {
-          this.$message.error(message || 'Error')
         }
       })
     }

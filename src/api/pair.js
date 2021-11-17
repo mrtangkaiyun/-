@@ -23,3 +23,11 @@ export function add (data) {
         data
     })
 }
+
+export function updateById (params) {
+    return request({
+        url: `${curl}/updateById`,
+        method: 'get',
+        params
+    })
+}

@@ -18,7 +18,6 @@
           :loading="table.loading"
           :pagination="pagination"
           @change="handleTabChange"
-          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :scroll="{ x: 900 }"
         >
           <template slot="index" slot-scope="index, record, i">
@@ -28,7 +27,9 @@
             <!-- <a-icon @click="clickUpdate(record)" type="form" /> -->
             <a-button type="primary" shape="circle" icon="form" @click="clickUpdate(record)"/>
             <a-divider type="vertical" />
-            <a-button type="primary" shape="circle" icon="menu" @click="clickDetail(record)"/>
+            <!-- <a-button type="primary" shape="circle" icon="menu" @click="clickDetail(record)"/>
+             <a-divider type="vertical" /> -->
+            <a-button type="primary" shape="circle" icon="info" @click="clickDetail(record)"/>
             <!-- <a-divider type="vertical" />
             <popconfirm-button custom :data="record" @click="clickDelete">
                <a-button type="danger" shape="circle" icon="delete"/>
@@ -43,7 +44,7 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list, remove } from '@/api/goods'
+import { taskList } from '@/api/train'
 import model from '@/public/indexModel.js'
 import Add from './Add'
 export default {
@@ -68,7 +69,8 @@ export default {
         params.pageNum = current
         params.pageSize = pageSize
         this.table.loading = true
-        list(params).then(({ code, data }) => {
+        params.id = this.id || 17
+        taskList(params).then(({ code, data }) => {
           this.table.loading = false
           if (code === 0) {
             this.pagination.total = data.total
@@ -77,21 +79,22 @@ export default {
         })
       }
     },
-    clickDeleteSelect () {
-      const { selectedRowKeys } = this
-    },
+    // clickDeleteSelect () {
+    //   const { selectedRowKeys } = this
+    // },
     clickDetail (record) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'detail', obj: record } })
-    },
-    clickDelete (record) {
-      remove(record.id).then(({ code }) => {
-        if (code === 1) {
-          this.$message.success('删除成功')
-          this.conditionPage()
-          this.fetchData(this.params)
-        }
-      })
     }
+    // ,
+    // clickDelete (record) {
+    //   levelRemove(record.id).then(({ code }) => {
+    //     if (code === 1) {
+    //       this.$message.success('删除成功')
+    //       this.conditionPage()
+    //       this.fetchData(this.params)
+    //     }
+    //   })
+    // }
   }
 }
 </script>

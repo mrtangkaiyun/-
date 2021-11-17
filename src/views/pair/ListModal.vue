@@ -26,8 +26,8 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="company" slot-scope="company">
-            {{ valueToLabelOption('companyOptions', company) }}
+          <template slot="state" slot-scope="state, record">
+            {{ data.type === 1 ? state : record.status }}
           </template>
         </a-table>
         <div class="text-center padding-t-50">
@@ -74,7 +74,7 @@ export default {
         const { current, pageSize } = this.pagination
         params.pageNum = current
         params.pageSize = pageSize
-        params.type = type
+        params.isType = type === 1 ? '师傅' : '徒弟'
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false

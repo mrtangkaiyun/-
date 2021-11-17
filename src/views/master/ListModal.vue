@@ -22,12 +22,12 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="company" slot-scope="company">
+          <!-- <template slot="company" slot-scope="company">
             {{ valueToLabelOption('companyOptions', company) }}
           </template>
           <template slot="isGraduation" slot-scope="isGraduation">
             {{ isGraduation === 2 ? '未出师' : '已出师' }}
-          </template>
+          </template> -->
         </a-table>
       </div>
     </a-modal>

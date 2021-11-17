@@ -7,33 +7,33 @@ export const columns = [
     },
     {
         title: '任务名称',
-        dataIndex: 'commodityName',
+        dataIndex: 'taskName',
         width: 120,
-        key: 'commodityName'
+        key: 'taskName'
     },
     {
         title: '任务发布日期',
-        dataIndex: 'a',
-        width: 100,
-        key: 'a'
+        dataIndex: 'startTime',
+        width: 150,
+        key: 'startTime'
     },
     {
         title: '任务截止时间',
-        dataIndex: 'currentPrice',
-        width: 100,
-        key: 'currentPrice'
+        dataIndex: 'endTime',
+        width: 150,
+        key: 'endTime'
     },
     {
         title: '任务执行人',
-        dataIndex: 'originalPrice',
-        width: 100,
-        key: 'originalPrice'
+        dataIndex: 'taskExecutorName',
+        width: 150,
+        key: 'taskExecutorName'
     },
     {
         title: '任务状态',
-        dataIndex: 'recommend',
+        dataIndex: 'taskStatus',
         width: 90,
-        key: 'recommend'
+        key: 'taskStatus'
     },
     {
         title: '操作',

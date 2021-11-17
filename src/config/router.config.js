@@ -139,7 +139,7 @@ export const asyncRouterMap = [
       {
         path: '/train',
         name: 'Train',
-        component: () => import('@/views/train/Index'),
+        component: () => import('@/views/train-m/train/Index'),
         meta: {
           title: '师带徒管理',
           icon: 'setting'
@@ -149,7 +149,7 @@ export const asyncRouterMap = [
         path: '/implement',
         name: 'Implement',
         hidden: true,
-        component: () => import('@/views/implement/Index'),
+        component: () => import('@/views/train-m/implement/Index'),
         meta: {
           title: '师带徒管理',
           icon: 'setting'

@@ -106,7 +106,7 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="6">
-            <a-form-model-item label="专业资格技术名称" prop="commodityName">
+            <a-form-model-item label="专业技术资格名称" prop="commodityName">
               <a-input placeholder="请输入" v-model="formInit.commodityName" />
             </a-form-model-item>
           </a-col>

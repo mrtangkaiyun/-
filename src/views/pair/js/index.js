@@ -20,10 +20,10 @@ export const columns = [
     },
     {
         title: '师徒状态',
-        dataIndex: 'isGraduationVo',
+        dataIndex: 'isGraduation',
         width: 100,
-        key: 'isGraduationVo',
-        scopedSlots: { customRender: 'isGraduationVo' }
+        key: 'isGraduation',
+        scopedSlots: { customRender: 'isGraduation' }
     },
     {
         title: '师徒匹配日期',
@@ -68,10 +68,9 @@ export const listColumns = [
     },
     {
         title: '所属单位',
-        dataIndex: 'company',
-        width: 100,
-        key: 'company',
-        scopedSlots: { customRender: 'company' }
+        dataIndex: 'companyName',
+        width: 160,
+        key: 'companyName'
     },
     {
         title: '学历',
@@ -80,16 +79,11 @@ export const listColumns = [
         key: 'education'
     },
     {
-        title: '配对日期',
-        dataIndex: 'foundTime',
-        width: 80,
-        key: 'foundTime'
-    },
-    {
         title: '师徒状态',
         dataIndex: 'state',
         width: 80,
-        key: 'state'
+        key: 'state',
+        scopedSlots: { customRender: 'state' }
     }
 ]
 
@@ -97,7 +91,6 @@ export const listSearchData = [
     [
         { type: 'input', key: 'name', label: '姓名', placeholder: '请输入姓名' },
         { type: 'select', key: 'company', label: '所属单位', placeholder: '请选择', options: companyOptions },
-        { type: 'select', key: 'status', label: '师徒状态', placeholder: '请选择', options: [{ label: '空闲 ', value: '1' }, { label: '带徒中', value: '2' }] },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],
