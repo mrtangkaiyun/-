@@ -74,17 +74,6 @@
           <a-col :span="15">
             <a-form-model-item label="结果资料">
               <div style="width:98%">
-                <!-- <a-upload
-                  ref="upxlsx"
-                  name="file"
-                  :multiple="true"
-                  :customRequest="customRequest"
-                  accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                >
-                  <a-button>
-                    <a-icon type="upload" />文件上传
-                  </a-button>
-                </a-upload> -->
                 <a-table
                   :columns="columns"
                   :dataSource="table.data"
@@ -96,8 +85,6 @@
                   </template>
                   <span slot="action" slot-scope="text, record">
                     <a href="javascript:;" @click="clickDownLoad(record)">下载</a>
-                    <!-- <a-divider type="vertical" />
-                    <popconfirm-button :data="record" @click="clickDelete"></popconfirm-button> -->
                   </span>
                 </a-table>
               </div>
@@ -120,7 +107,7 @@ import moment from 'moment'
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
 import indexModel from '@/public/indexModel.js'
-import { saveAdd, saveEdit, load } from '@/api/train'
+import { saveAdd, saveEdit, load, downLoadFile } from '@/api/train'
 import { editColumns } from './js/index'
 import { downLoadExcel } from '@/utils/util'
 import { issuerOptions } from '@/utils/option'
@@ -181,6 +168,7 @@ export default {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 0) {
+          this.table.data = data.wordNames.map((e, i) => ({ idx: i + 1, name: e }))
           this.taskExecutorObj = {
             studentName: data.taskExecutorName,
             studentId: data.taskExecutor
@@ -204,32 +192,12 @@ export default {
       this.taskExecutorObj = selected
       this.formInit.taskExecutor = selected.studentId
     },
-    clickDownLoad () {
-      load({ type: 1, operationType: 2 }).then((res) => {
+    clickDownLoad (record) {
+      const { obj } = this.data
+      downLoadFile({ id: obj.id, index: record.idx }).then((res) => {
         if (res) {
-          const fileName = `账号导入模板`
+          const fileName = `结果资料`
           downLoadExcel(res, fileName).then(() => {})
-        }
-      })
-    },
-    clickDelete (record) {
-      remove(record.id).then(({ code }) => {
-        if (code === 1) {
-          this.$message.success('删除成功')
-          this.conditionPage()
-          this.fetchData(this.params)
-        }
-      })
-    },
-    customRequest (e) {
-      const form = new FormData()
-      form.append('file', e.file)
-      remove(form).then(({ code, message }) => {
-        if (code === 0) {
-          this.$refs.table.refresh()
-          this.$message.success(message || '导入成功')
-        } else {
-          this.$message.error(message || 'Error')
         }
       })
     },

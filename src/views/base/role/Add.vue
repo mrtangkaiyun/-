@@ -11,19 +11,14 @@
       width="700px"
     >
       <a-form-model ref="form" :model="formInit" loading :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-        <a-form-model-item label="角色名称" prop="commodityName" :rules="rules.input">
-          <a-input placeholder="请输入" v-model="formInit.commodityName" />
+        <a-form-model-item label="角色名称" prop="roleName" :rules="rules.input">
+          <a-input :disabled="isDetail" placeholder="请输入" v-model="formInit.roleName" />
         </a-form-model-item>
-        <a-form-model-item label="角色Type" prop="commodityName" :rules="rules.input">
-          <a-select v-model="formInit.commodityName1" placeholder="请选择">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in roleList">{{ item.name }}</a-select-option>
-          </a-select>
+        <a-form-model-item label="权限勾选" prop="menus">
+          <!-- <a-input style="display: none" placeholder="请输入" v-model="formInit.menus" /> -->
+          <a-button @click="clickTree()"> <a-icon type="plus" />点击勾选 </a-button>
         </a-form-model-item>
-        <a-form-model-item label="权限勾选" prop="commodityName" :rules="rules.input">
-          <a-input style="display: none" placeholder="请输入" v-model="formInit.a" />
-          <a-button @click="clickTree()"> <a-icon type="plus" />点击选择 </a-button>
-        </a-form-model-item>
-        <div class="text-center">
+        <div v-if="!isDetail" class="text-center">
           <a-button @click="closeDialog"> 取消 </a-button>
           <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
         </div>
@@ -41,58 +36,46 @@
 <script>
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
-import { save, load } from '@/api/goods'
+import { save } from '@/api/role'
 import TreeModal from './Tree.vue'
 export default {
   mixins: [model, rules],
   components: { TreeModal },
   data () {
     return {
-      formInit: { name: null },
-      roleList: [
-        {
-          name: 'admin',
-          id: 'admin'
-        },
-        {
-          name: 'sf',
-          id: '2'
-        },
-        {
-          name: 'td',
-          id: '3'
-        }
-      ],
+      formInit: {
+        id: null,
+        roleName: null,
+        menu: [],
+        menus: []
+      },
       listObj: {
         visiable: false,
         data: null
       }
     }
   },
+  computed: {
+    isDetail () {
+      const { type } = this.data
+      return type === 'detail'
+    }
+  },
   created () {
-    const { type } = this.data
-    const title = type === 'add' ? '角色新增' : '角色修改'
+    const { type, obj } = this.data
+    const title = type === 'edit' ? '修改' : '详情'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
-    if (type === 'edit') {
-      this.fetchInfo()
+    if (type === 'edit' || type === 'detail') {
+      this.$setOriginalKV(this.formInit, obj)
     }
   },
   methods: {
-    confirmTree () {
-
+    confirmTree (checkedKeys) {
+      this.formInit.menus = this.$copy(checkedKeys)
+      this.formInit.menu = this.$copy(checkedKeys).join(',')
     },
     clickTree () {
-      this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'tree', obj: {} } })
-    },
-    fetchInfo () {
-      const { obj } = this.data
-      load(obj.id).then(({ code, data }) => {
-        if (code === 1) {
-          data.imgDtos = data.imgDtos.map((e) => e.imgPath)
-          this.originalData = this.$copy(data)
-          this.$setOriginalKV(this.formInit, data)
-        }
-      })
+      this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'tree', obj: this.formInit.menus } })
     },
     handleSubmit (e) {
       e.preventDefault()
@@ -100,10 +83,6 @@ export default {
         if (valid) {
           const { type, obj } = this.data
           const params = { ...this.formInit }
-          if (type === 'edit' && this.$compareObjValue(this.originalData, params)) {
-            this.$message.warning('数据没有任何修改')
-            return
-          }
           if (type === 'edit') {
             params.id = obj.id
           }

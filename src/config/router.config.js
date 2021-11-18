@@ -27,6 +27,7 @@ export const asyncRouterMap = [
           {
             path: '/dashboard/analysis',
             name: 'Analysis',
+            permission: ['Analysis'],
             component: () => import('@/views/dashboard/Analysis'),
             meta: { title: '数据分析', keepAlive: false, permission: ['dashboard'] }
           }
@@ -112,7 +113,7 @@ export const asyncRouterMap = [
         path: '/master',
         name: 'Master',
         component: () => import('@/views/master/Index'),
-        // permission: ['Goods'],
+        permission: ['Master'],
         meta: {
           title: '师傅管理',
           icon: 'setting'
@@ -121,6 +122,7 @@ export const asyncRouterMap = [
       {
         path: '/pupil',
         name: 'Pupil',
+        permission: ['Pupil'],
         component: () => import('@/views/pupil/Index'),
         meta: {
           title: '徒弟管理',
@@ -130,6 +132,7 @@ export const asyncRouterMap = [
       {
         path: '/pair',
         name: 'Pair',
+        permission: ['Pair'],
         component: () => import('@/views/pair/Index'),
         meta: {
           title: '配对管理',
@@ -139,6 +142,7 @@ export const asyncRouterMap = [
       {
         path: '/train',
         name: 'Train',
+        permission: ['Train'],
         component: () => import('@/views/train-m/train/Index'),
         meta: {
           title: '师带徒管理',
@@ -148,6 +152,7 @@ export const asyncRouterMap = [
       {
         path: '/implement',
         name: 'Implement',
+        permission: ['Implement', 'Train'],
         hidden: true,
         component: () => import('@/views/train-m/implement/Index'),
         meta: {
@@ -158,6 +163,7 @@ export const asyncRouterMap = [
       {
         path: '/task',
         name: 'Task',
+        permission: ['Task'],
         component: () => import('@/views/task/Index'),
         meta: {
           title: '师徒任务',
@@ -168,7 +174,7 @@ export const asyncRouterMap = [
         path: '/base',
         name: 'Base',
         component: RouteView,
-        // permission: ['Base'],
+        permission: ['Base'],
         meta: {
           title: '系统管理',
           icon: 'setting'
@@ -178,7 +184,7 @@ export const asyncRouterMap = [
             path: '/base/account',
             name: 'BaseAccount',
             component: () => import('@/views/base/account/Index'),
-            // permission: ['BaseAccount'],
+            permission: ['BaseAccount'],
             meta: {
               title: '用户管理'
             }
@@ -187,7 +193,7 @@ export const asyncRouterMap = [
             path: '/base/role',
             name: 'BaseRole',
             component: () => import('@/views/base/role/Index'),
-            // permission: ['BaseRole'],
+            permission: ['BaseRole'],
             meta: {
               title: '角色管理'
             }

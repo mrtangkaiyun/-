@@ -62,9 +62,19 @@ export function startAndEndTask (params) {
     })
 }
 
-export function importExcel (data) {
+//  徒弟修改任务执行反馈
+export function pupilEdit (data) {
     return request({
-        url: `${curl}/importExcel`,
+        url: `${curl}/updateTask`,
+        method: 'post',
+        data
+    })
+}
+
+//  徒弟任务上传文件
+export function EditUploadExcel (data) {
+    return request({
+        url: `${curl}/upload`,
         method: 'post',
         data,
         headers: {
@@ -72,19 +82,48 @@ export function importExcel (data) {
         }
     })
 }
-
-export function save (data) {
+//  删除文件
+export function removeWordName (params) {
     return request({
-        url: `${curl}/update`,
-        method: 'post',
-        data
-    })
-}
-
-export function queryStuTea (params) {
-    return request({
-        url: `${curl}/queryStuTea`,
+        url: `${curl}/deleteWordName`,
         method: 'get',
         params
     })
 }
+
+//  下载文件
+export function downLoadFile (data) {
+    return request({
+        url: `${curl}/download`,
+        method: 'post',
+        data,
+        responesType: 'blob'
+    })
+}
+
+// export function importExcel (data) {
+//     return request({
+//         url: `${curl}/importExcel`,
+//         method: 'post',
+//         data,
+//         headers: {
+//             'Content-Type': 'multipart/form-data'
+//         }
+//     })
+// }
+
+// export function save (data) {
+//     return request({
+//         url: `${curl}/update`,
+//         method: 'post',
+//         data
+//     })
+// }
+
+// export function queryStuTea (params) {
+//     return request({
+//         url: `${curl}/queryStuTea`,
+//         method: 'get',
+//         params
+//     })
+// }

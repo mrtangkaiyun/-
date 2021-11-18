@@ -32,12 +32,7 @@
           <a-col :span="8">
             <a-form-model-item label="发布人" prop="publisher">
               <a-input style="display:none" placeholder="请输入" v-model="taskExecutorObj.publisher" />
-              <a-input disabled placeholder="请输入" :value="publisherName" />
-              <!-- <a-select v-model="formInit.sex" placeholder="请选择">
-                <a-select-option v-for="item in issuerOptions" :key="item.value" :value="item.value">
-                  {{ item.label }}
-                </a-select-option>
-              </a-select> -->
+              <a-input disabled placeholder="请输入" :value="taskExecutorObj.publisherName" />
             </a-form-model-item>
           </a-col>
           <a-col :span="8">
@@ -66,18 +61,24 @@
             </a-form-model-item>
           </a-col>
         </a-row>
+        <div v-if="!isDetail">
+          <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
+        </div>
 
         <a-row v-if="isEdit || isDetail">
           <a-col :span="15">
             <a-form-model-item label="结果资料">
               <div style="width:98%">
+                <a-button v-show="!isDetail" @click="importFile">
+                  <a-icon type="upload" />文件上传
+                </a-button>
                 <a-upload
-                  v-if="isEdit"
+                  v-show="false"
                   ref="upxlsx"
                   name="file"
                   :multiple="true"
                   :customRequest="customRequest"
-                  accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  accept="doc,.pdf,.docx,.csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 >
                   <a-button>
                     <a-icon type="upload" />文件上传
@@ -89,23 +90,18 @@
                   rowKey="id"
                   :loading="table.loading"
                 >
-                  <template slot="index" slot-scope="index, record, i">
-                    {{ i + 1 }}
-                  </template>
                   <span slot="action" slot-scope="text, record">
                     <a href="javascript:;" @click="clickDownLoad(record)">下载</a>
                     <a-divider v-if="isEdit" type="vertical" />
-                    <popconfirm-button v-if="isEdit" :data="record" @click="clickDelete"></popconfirm-button>
+                    <popconfirm-button v-if="isEdit" :data="record" @click="deleteWordName"></popconfirm-button>
                   </span>
                 </a-table>
               </div>
             </a-form-model-item>
           </a-col>
         </a-row>
-
         <div v-if="!isDetail" class="text-center">
-          <a-button @click="closeDialog"> 取消 </a-button>
-          <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
+          <a-button @click="closeDialog"> 关闭 </a-button>
         </div>
       </a-form-model>
     </a-modal>
@@ -113,11 +109,10 @@
 </template>
 
 <script>
-import moment from 'moment'
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
 import indexModel from '@/public/indexModel.js'
-import { saveAdd, saveEdit, load } from '@/api/train'
+import { pupilEdit, load, removeWordName, EditUploadExcel, downLoadFile } from '@/api/train'
 import { editColumns } from './js/index'
 import { downLoadExcel } from '@/utils/util'
 import { issuerOptions } from '@/utils/option'
@@ -126,19 +121,13 @@ export default {
   data () {
     return {
       taskExecutorObj: { },
-      publisherName: null,
       formInit: {
-        // rspId: null,  // 一级页面id 新增关联
-        // id: null,  // 修改任务id
-        taskName: null,
-        endTime: null,
-        publisher: null, // 发布人id
-        startTime: null,
+        // id: null,  // 任务id
+        feedback: null,
+        publisher: null,
         taskExecutor: null,
-        taskDemand: null
-      },
-      formInitInfo: {
-
+        taskName: null,
+        taskStatusVo: null
       },
       columns: editColumns,
       issuerOptions
@@ -155,31 +144,25 @@ export default {
     }
   },
   created () {
-    const { type, obj } = this.data
+    const { type } = this.data
     const title = type === 'add' ? '任务发布' : type === 'edit' ? '任务编辑' : '任务详情'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
     if (type === 'edit' || type === 'detail') {
       this.fetchInfo()
     }
-    //  else {
-    //   if (obj) {
-    //     this.publisherName = obj.masterName
-    //     this.formInit.publisher = obj.masterId
-    //   }
-    // }
   },
   methods: {
     fetchInfo () {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 0) {
+          this.table.data = data.wordNames.map((e, i) => ({ idx: i + 1, name: e }))
           this.taskExecutorObj = {
             studentName: data.taskExecutorName,
             studentId: data.taskExecutor,
             ...data
           }
           this.originalData = this.$copy(data)
-          this.formInitInfo = this.$copy(data)
           this.$setOriginalKV(this.formInit, data)
         }
       })
@@ -188,30 +171,37 @@ export default {
       this.taskExecutorObj = selected
       this.formInit.taskExecutor = selected.studentId
     },
-    clickDownLoad () {
-      load({ type: 1, operationType: 2 }).then((res) => {
+    clickDownLoad (record) {
+      const { obj } = this.data
+      downLoadFile({ id: obj.id, index: record.idx }).then((res) => {
         if (res) {
-          const fileName = `账号导入模板`
+          const fileName = `结果资料`
           downLoadExcel(res, fileName).then(() => {})
         }
       })
     },
-    clickDelete (record) {
-      remove(record.id).then(({ code }) => {
+    deleteWordName (record) {
+      const { obj } = this.data
+      removeWordName({ id: obj.id, index: record.idx }).then(({ code }) => {
         if (code === 1) {
           this.$message.success('删除成功')
           this.conditionPage()
-          this.fetchData(this.params)
+          this.fetchInfo()
         }
       })
     },
+    importFile () {
+      this.$refs['upxlsx'].$el.getElementsByTagName('input')[0].click()
+    },
     customRequest (e) {
+      const { obj } = this.data
       const form = new FormData()
       form.append('file', e.file)
-      remove(form).then(({ code, message }) => {
+      form.append('id', obj.id)
+      EditUploadExcel(form).then(({ code, message }) => {
         if (code === 0) {
-          this.$refs.table.refresh()
-          this.$message.success(message || '导入成功')
+          this.fetchInfo()
+          this.$message.success(message || '上传成功')
         } else {
           this.$message.error(message || 'Error')
         }
@@ -227,15 +217,10 @@ export default {
             this.$message.warning('数据没有任何修改')
             return
           }
-          params.startTime = moment(params.startTime).format('YYYY-MM-DD')
-          params.endTime = moment(params.endTime).format('YYYY-MM-DD')
           this.$setKeyValue(this.button, { loading: true, text: '提交中' })
           if (type === 'edit') {
             params.id = obj.id
-            saveEdit(params).then((result) => this.process(result))
-          } else {
-            params.rspId = obj.id
-            saveAdd(params).then((result) => this.process(result))
+            pupilEdit(params).then((result) => this.process(result))
           }
         } else {
           this.$message.warning('请完善上面必填信息')

@@ -10,29 +10,38 @@
       :maskClosable="false"
       width="700px"
     >
-      <a-form-model ref="form" :model="formInit" loading :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-        <a-form-model-item label="账号" prop="commodityName" :rules="rules.input">
-          <a-input placeholder="请输入" v-model="formInit.commodityName" />
-        </a-form-model-item>
-        <a-form-model-item label="密码" prop="commodityName" :rules="rules.input">
-          <a-input-password autocomplete="off" v-model="formInit.commodityName"/>
-        </a-form-model-item>
-        <a-form-model-item label="确认密码" prop="commodityName" :rules="rules.input">
-          <a-input-password autocomplete="off" v-model="formInit.commodityName"/>
-        </a-form-model-item>
-        <a-form-model-item label="姓名" prop="commodityName" :rules="rules.input">
-          <a-input placeholder="请输入" v-model="formInit.commodityName" />
-        </a-form-model-item>
-        <a-form-model-item label="角色" prop="commodityName1" :rules="rules.input">
-          <a-select v-model="formInit.commodityName1" placeholder="请选择">
-            <a-select-option :value="item.id" :key="item.id" v-for="item in roleList">{{ item.name }}</a-select-option>
-          </a-select>
-        </a-form-model-item>
-        <div class="text-center">
-          <a-button @click="closeDialog"> 取消 </a-button>
-          <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
-        </div>
-      </a-form-model>
+      <a-tabs default-active-key="1" v-model="active">
+        <a-tab-pane key="1" tab="修改信息">
+          <a-form-model ref="form" :model="formInit" loading :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+            <a-form-model-item label="（编号）账号" prop="userName">
+              <a-input disabled placeholder="请输入" v-model="formInit.userName" />
+            </a-form-model-item>
+            <a-form-model-item label="角色" prop="authority">
+              <a-select :disabled="isDetail" v-model="formInit.authority" placeholder="请选择">
+                <a-select-option :value="item.roleName" :key="item.id" v-for="item in roleList">{{
+                  item.roleName
+                }}</a-select-option>
+              </a-select>
+            </a-form-model-item>
+            <!-- <a-form-model-item label="密码" prop="passWord" :rules="rules.input">
+              <a-input-password autocomplete="off" v-model="formInit.passWord" />
+            </a-form-model-item>
+            <a-form-model-item label="确认密码" prop="newPassWord" :rules="rules.input">
+              <a-input-password autocomplete="off" v-model="formInit.newPassWord" />
+            </a-form-model-item> -->
+            <div v-if="!isDetail" class="text-center">
+              <a-button @click="closeDialog"> 取消 </a-button>
+              <a-button
+                type="primary"
+                class="margin-l-20"
+                @click="handleSubmit"
+                :loading="button.loading"
+              >保存</a-button
+              >
+            </div>
+          </a-form-model>
+        </a-tab-pane>
+      </a-tabs>
     </a-modal>
   </div>
 </template>
@@ -40,26 +49,22 @@
 <script>
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
-import { save, load } from '@/api/goods'
+// import { updatePwd } from '@/api/user'
+import { save } from '@/api/account'
+import { list } from '@/api/role'
 export default {
   mixins: [model, rules],
   data () {
     return {
-      formInit: { name: null },
-      roleList: [
-        {
-          name: '超级管理员',
-          id: '1'
-        },
-        {
-          name: '师傅',
-          id: '2'
-        },
-        {
-          name: '徒弟',
-          id: '3'
-        }
-      ]
+      formInit: {
+        authority: null,
+        userName: null
+        // passWord: null,
+        // newPassWord: null
+        // id: null
+      },
+      active: '1',
+      roleList: []
     }
   },
   computed: {
@@ -69,33 +74,33 @@ export default {
     }
   },
   created () {
-    const { type } = this.data
-    const title = type === 'add' ? '师傅新增' : type === 'edit' ? '师傅修改' : '师傅详情'
+    const { type, obj } = this.data
+    const title = type === 'edit' ? '修改' : '详情'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
     if (type === 'edit' || type === 'detail') {
-      this.fetchInfo()
+      this.formInit.authority = obj.roleName
+      this.formInit.userName = obj.number
+      this.getRoleList()
     }
   },
   methods: {
-    fetchInfo () {
-      const { obj } = this.data
-      load(obj.id).then(({ code, data }) => {
-        if (code === 1) {
-          data.imgDtos = data.imgDtos.map((e) => e.imgPath)
-          this.originalData = this.$copy(data)
-          this.$setOriginalKV(this.formInit, data)
-        }
-      })
+    getRoleList () {
+      const params = { }
+      params.pageNum = 1
+      params.pageSize = 100
+        list(params).then(({ code, data }) => {
+          if (code === 0) {
+            this.roleList = data.rows
+          }
+        })
     },
     handleSubmit (e) {
       e.preventDefault()
       this.$refs.form.validate((valid) => {
         if (valid) {
           const { type, obj } = this.data
-          const params = { ...this.formInit }
-          if (type === 'edit' && this.$compareObjValue(this.originalData, params)) {
-            this.$message.warning('数据没有任何修改')
-            return
+          const params = {
+            ...this.formInit
           }
           if (type === 'edit') {
             params.id = obj.id

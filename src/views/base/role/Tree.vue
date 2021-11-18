@@ -10,7 +10,7 @@
       :maskClosable="false"
       width="500px"
     >
-      {{ checkedKeys }}
+      <br />
       <a-tree
         v-model="checkedKeys"
         checkable
@@ -31,41 +31,82 @@
 
 <script>
 import model from '@/public/addModel.js'
-import { load } from '@/api/goods'
 import { treeData } from '@/utils/auth'
 export default {
   mixins: [model],
   data () {
     return {
-      expandedKeys: ['0-0-0', '0-0-1'],
+      expandedKeys: [],
       autoExpandParent: true,
-      checkedKeys: ['0-0', '0-0-0'],
+      checkedKeys: [],
       selectedKeys: [],
       treeData
     }
   },
   created () {
-    console.log(123456)
     const title = '勾选权限'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
-    // this.fetchInfo()
+    this.init()
   },
   methods: {
-    // fetchInfo() {
-    //   const { obj } = this.data
-    //   load(obj.id).then(({ code, data }) => {
-    //     if (code === 1) {
-    //       data.imgDtos = data.imgDtos.map((e) => e.imgPath)
-    //       this.originalData = this.$copy(data)
-    //       this.$setOriginalKV(this.formInit, data)
-    //     }
-    //   })
-    // },
-    handleSubmit () {},
+    init () {
+      const { obj } = this.data; const checkedKeys = this.$copy(obj)
+      const p = []
+      this.selectParents(this.treeData, checkedKeys, p)
+      for (let i = 0; i < checkedKeys.length; i++) {
+        const bool = p.some(e => (e === checkedKeys[i]))
+        if (bool) {
+          checkedKeys.splice(i, 1)
+          i--
+        }
+      }
+      this.checkedKeys = checkedKeys
+      console.log(this.checkedKeys, '去掉父级 selectedKeys')
+    },
+    selectParents (menus, keys, arr = []) {
+      let bool = false
+      for (let i = 0; i < menus.length; i++) {
+        if (!bool) {
+           bool = keys.some(e => (e === menus[i].key))
+        }
+        if (menus[i].children) {
+         const b = this.selectParents(menus[i].children, keys, arr)
+         if (b) {
+           bool = b
+           arr.push(menus[i].key)
+         }
+        }
+      }
+      return bool
+    },
+    selectParentsTwo (menus, keys, arr = []) {
+      let bool = false
+      for (let i = 0; i < menus.length; i++) {
+        if (!bool) {
+           bool = keys.some(e => (e === menus[i].key))
+        }
+        if (menus[i].children) {
+         const b = this.selectParentsTwo(menus[i].children, keys, arr)
+         if (b) {
+           bool = b
+           arr.push(menus[i].key)
+         }
+        }
+      }
+      return bool
+    },
+    handleSubmit () {
+      let checkedKeys = this.$copy(this.checkedKeys); const eachKeys = []
+      this.selectParentsTwo(this.treeData, checkedKeys, eachKeys)
+      checkedKeys = checkedKeys.concat(eachKeys)
+      checkedKeys = new Set(checkedKeys)
+      checkedKeys = Array.from(checkedKeys)
+      console.log('选择 key', checkedKeys)
+      this.$emit('confirm', checkedKeys)
+      this.closeDialog()
+    },
     onExpand (expandedKeys) {
       console.log('onExpand', expandedKeys)
-      // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-      // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },

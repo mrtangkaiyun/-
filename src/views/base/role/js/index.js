@@ -7,46 +7,25 @@ export const columns = [
         scopedSlots: { customRender: 'index' }
     },
     {
-        title: '登录账号',
-        dataIndex: 'commodityName',
+        title: '角色名',
+        dataIndex: 'roleName',
         width: 120,
-        key: 'commodityName'
-    },
-    {
-        title: '账号名称',
-        dataIndex: 'a',
-        width: 100,
-        key: 'a'
-    },
-    {
-        title: '创建时间',
-        dataIndex: 'currentPrice',
-        width: 100,
-        key: 'currentPrice'
-    },
-    {
-        title: '最近登录时间',
-        dataIndex: 'originalPrice',
-        width: 100,
-        key: 'originalPrice'
+        key: 'roleName'
     },
     {
         title: '操作',
         key: 'action',
         fixed: 'right',
-        width: 240,
+        width: 160,
         scopedSlots: { customRender: 'action' }
     }
 ]
 
 export const searchData = [
     [
-        { type: 'input', key: 'name', label: '账号', placeholder: '请输入账号' },
+        { type: 'input', key: 'roleName', label: '角色名称', placeholder: '请输入角色' },
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
     ],
-    [
-        { type: 'add', name: '新增' },
-        { type: 'import', name: '导入' }
-    ]
+    [ ]
 ]

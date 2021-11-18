@@ -63,15 +63,15 @@ export const searchData = [
 export const editColumns = [
     {
         title: '序号',
-        dataIndex: 'index',
+        dataIndex: 'idx',
         width: 80,
-        scopedSlots: { customRender: 'index' }
+        scopedSlots: { customRender: 'idx' }
     },
     {
         title: '文件名称',
-        dataIndex: 'a',
-        width: 120,
-        key: 'a'
+        dataIndex: 'name',
+        width: 200,
+        key: 'name'
     },
     {
         title: '操作',

@@ -1,53 +1,39 @@
 export const treeData = [
     {
+        title: '数据分析',
+        key: 'Analysis'
+    },
+    {
         title: '师傅管理',
-        key: '1-1'
-        // children: [
-        //     {
-        //         title: '新增',
-        //         key: '0-0-0',
-        //     },
-        //     {
-        //         title: '修改',
-        //         key: '0-0-1',
-        //     }
-        // ]
+        key: 'Master'
     },
     {
         title: '徒弟管理',
-        key: '2-2'
-        // children: [
-        //     {
-        //         title: '新增',
-        //         key: '0-0-0',
-        //     },
-        //     {
-        //         title: '修改',
-        //         key: '0-0-1',
-        //     }
-        // ]
+        key: 'Pupil'
+    },
+    {
+        title: '配对管理',
+        key: 'Pair'
+    },
+    {
+        title: '师带徒管理',
+        key: 'Train'
+    },
+    {
+        title: '师徒任务',
+        key: 'Task'
     },
     {
         title: '系统管理',
-        key: '0-0',
+        key: 'Base',
         children: [
             {
                 title: '用户管理',
-                key: '0-0-0'
-                // children: [
-                //     { title: '0-0-0-0', key: '0-0-0-0' },
-                //     { title: '0-0-0-1', key: '0-0-0-1' },
-                //     { title: '0-0-0-2', key: '0-0-0-2' },
-                // ],
+                key: 'BaseAccount'
             },
             {
                 title: '角色管理',
-                key: '0-0-1'
-                // children: [
-                //     { title: '0-0-1-0', key: '0-0-1-0' },
-                //     { title: '0-0-1-1', key: '0-0-1-1' },
-                //     { title: '0-0-1-2', key: '0-0-1-2' },
-                // ],
+                key: 'BaseRole'
             }
         ]
     }
