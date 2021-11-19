@@ -34,6 +34,10 @@ export const treeData = [
             {
                 title: '角色管理',
                 key: 'BaseRole'
+            },
+            {
+                title: '日志管理',
+                key: 'BaseJournal'
             }
         ]
     }

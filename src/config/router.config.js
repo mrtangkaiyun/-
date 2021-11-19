@@ -133,7 +133,7 @@ export const asyncRouterMap = [
             name: 'Journal',
             component: () => import('@/views/base/journal/Index'),
             meta: {
-              // permission: ['BaseJournal'],
+              permission: ['BaseJournal'],
               title: '日志管理'
             }
           }
