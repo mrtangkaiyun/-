@@ -35,12 +35,11 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="6">
-            <a-form-model-item label="出生日期" prop="foundTime" :rules="rules.select">
+            <a-form-model-item label="配对日期" prop="foundTime" :rules="rules.select">
               <a-date-picker v-model="formInit.foundTime" />
             </a-form-model-item>
           </a-col>
         </a-row>
-
         <div class="text-center padding-t-50">
           <a-button @click="closeDialog"> 取消 </a-button>
           <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>

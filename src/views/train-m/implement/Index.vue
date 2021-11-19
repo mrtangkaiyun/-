@@ -103,7 +103,7 @@ export default {
     //   const { selectedRowKeys } = this
     // },
     clickDelete (record) {
-      levelRemove(record.id).then(({ code }) => {
+      levelRemove({id: record.id}).then(({ code }) => {
         if (code === 0) {
           this.$message.success('删除成功')
           this.conditionPage()
@@ -116,21 +116,6 @@ export default {
     },
     clickListRecord (record) {
       this.$setKeyValue(this.listObj, { visiable: true, data: { type: 'list', obj: record } })
-    },
-    importFile () {
-      this.$refs['upxlsx'].$el.getElementsByTagName('input')[0].click()
-    },
-    customRequest (e) {
-      const form = new FormData()
-      form.append('file', e.file)
-      levelRemove(form).then(({ code, message }) => {
-        if (code === 0) {
-          this.$refs.table.refresh()
-          this.$message.success(message || '导入成功')
-        } else {
-          this.$message.error(message || 'Error')
-        }
-      })
     }
   }
 }

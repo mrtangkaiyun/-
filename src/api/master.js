@@ -34,6 +34,14 @@ export function load (id) {
     })
 }
 
+export function add (data) {
+    return request({
+        url: `${curl}/add`,
+        method: 'post',
+        data
+    })
+}
+
 export function save (data) {
     return request({
         url: `${curl}/update`,
@@ -41,6 +49,7 @@ export function save (data) {
         data
     })
 }
+
 
 export function queryStuTea (params) {
     return request({

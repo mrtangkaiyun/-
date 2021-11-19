@@ -152,7 +152,7 @@
 import moment from 'moment'
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
-import { save, load } from '@/api/master'
+import { save, load, add } from '@/api/master'
 import { sexOptions, nationOptions, faceOptions, recordOptions, companyOptions, cardOneOptions, cardTwoOptions } from '@/utils/option'
 export default {
   mixins: [model, rules],
@@ -167,6 +167,7 @@ export default {
       recordOptions,
       classOptions: [],
       formInit: {
+        isType: '徒弟',
         number: null,
         name: null,
         company: null,
@@ -218,17 +219,19 @@ export default {
         if (valid) {
           const { type, obj } = this.data
           const params = { ...this.formInit }
-          params.birthday = moment(params.birthday).format('YYYY-MM-DD')
-          params.workingTime = moment(params.workingTime).format('YYYY-MM-DD')
+          params.birthday = params.birthday ? moment(params.birthday).format('YYYY-MM-DD') : params.birthday
+          params.workingTime = params.workingTime ? moment(params.workingTime).format('YYYY-MM-DD') : params.workingTime
           if (type === 'edit' && this.$compareObjValue(this.originalData, params)) {
             this.$message.warning('数据没有任何修改')
             return
           }
+          this.$setKeyValue(this.button, { loading: true, text: '提交中' })
           if (type === 'edit') {
             params.id = obj.id
+            save(params).then((result) => this.process(result))
+          } else {
+            add(params).then((result) => this.process(result))
           }
-          this.$setKeyValue(this.button, { loading: true, text: '提交中' })
-          save(params).then((result) => this.process(result))
         } else {
           this.$message.warning('请完善上面必填信息')
         }
