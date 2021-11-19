@@ -61,9 +61,6 @@
             </a-form-model-item>
           </a-col>
         </a-row>
-        <div v-if="!isDetail">
-          <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
-        </div>
 
         <a-row v-if="isEdit || isDetail">
           <a-col :span="15">
@@ -101,6 +98,7 @@
           </a-col>
         </a-row>
         <div v-if="!isDetail" class="text-center">
+          <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
           <a-button @click="closeDialog"> 关闭 </a-button>
         </div>
       </a-form-model>
