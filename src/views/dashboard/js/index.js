@@ -20,10 +20,10 @@ export const columns = [
     },
     {
         title: '所属单位',
-        dataIndex: 'company',
+        dataIndex: 'companyName',
         width: 100,
-        key: 'company',
-        scopedSlots: { customRender: 'company' }
+        key: 'companyName',
+        scopedSlots: { customRender: 'companyName' }
     },
     {
         title: '带徒次数',
