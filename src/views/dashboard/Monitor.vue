@@ -17,9 +17,6 @@
           <template slot="index" slot-scope="index, record, i">
             {{ i + 1 }}
           </template>
-          <template slot="company" slot-scope="company">
-            {{ valueToLabelOption('companyOptions', company) }}
-          </template>
         </a-table>
       </div>
     </a-card>

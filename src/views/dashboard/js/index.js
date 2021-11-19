@@ -22,8 +22,7 @@ export const columns = [
         title: '所属单位',
         dataIndex: 'companyName',
         width: 100,
-        key: 'companyName',
-        scopedSlots: { customRender: 'companyName' }
+        key: 'companyName'
     },
     {
         title: '带徒次数',
