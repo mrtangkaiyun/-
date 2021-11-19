@@ -21,6 +21,8 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const assetsCDN = {
   // webpack build externals
+  outputDir: 'hbsdt',
+  publicPath: '/hbsdt/',
   externals: {
     vue: 'Vue',
     'vue-router': 'VueRouter',
