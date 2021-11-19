@@ -123,11 +123,11 @@ export default {
       taskExecutorObj: { },
       formInit: {
         // id: null,  // 任务id
-        feedback: null,
-        publisher: null,
-        taskExecutor: null,
-        taskName: null,
-        taskStatusVo: null
+        feedback: null
+        // publisher: null,
+        // taskExecutor: null,
+        // taskName: null,
+        // taskStatusVo: null
       },
       columns: editColumns,
       issuerOptions
@@ -156,7 +156,7 @@ export default {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 0) {
-          this.table.data = data.wordNames.map((e, i) => ({ idx: i + 1, name: e }))
+          this.table.data = data.wordNames ? data.wordNames.map((e, i) => ({ idx: i + 1, name: e })) : []
           this.taskExecutorObj = {
             studentName: data.taskExecutorName,
             studentId: data.taskExecutor,
@@ -173,7 +173,7 @@ export default {
     },
     clickDownLoad (record) {
       const { obj } = this.data
-      downLoadFile({ id: obj.id, index: record.idx }).then((res) => {
+      downLoadFile({ id: obj.id, row: record.idx }).then((res) => {
         if (res) {
           const fileName = `结果资料`
           downLoadExcel(res, fileName).then(() => {})
@@ -182,10 +182,9 @@ export default {
     },
     deleteWordName (record) {
       const { obj } = this.data
-      removeWordName({ id: obj.id, index: record.idx }).then(({ code }) => {
-        if (code === 1) {
+      removeWordName({ id: obj.id, row: record.idx }).then(({ code }) => {
+        if (code === 0) {
           this.$message.success('删除成功')
-          this.conditionPage()
           this.fetchInfo()
         }
       })
@@ -202,8 +201,6 @@ export default {
         if (code === 0) {
           this.fetchInfo()
           this.$message.success(message || '上传成功')
-        } else {
-          this.$message.error(message || 'Error')
         }
       })
     },

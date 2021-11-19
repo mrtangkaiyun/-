@@ -133,12 +133,10 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
           const loginParams = { }
-          delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'name'] = values.username
+          loginParams[!state.loginType ? 'userName' : 'userName'] = values.username
           // loginParams.pass = md5(values.password)
-          loginParams.pass = values.password
+          loginParams.passWord = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))

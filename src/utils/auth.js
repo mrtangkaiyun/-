@@ -1,7 +1,7 @@
 export const treeData = [
     {
         title: '数据分析',
-        key: 'Analysis'
+        key: 'Monitor'
     },
     {
         title: '师傅管理',

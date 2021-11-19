@@ -168,7 +168,7 @@ export default {
       const { obj } = this.data
       load(obj.id).then(({ code, data }) => {
         if (code === 0) {
-          this.table.data = data.wordNames.map((e, i) => ({ idx: i + 1, name: e }))
+          this.table.data = data.wordNames ? data.wordNames.map((e, i) => ({ idx: i + 1, name: e })) : []
           this.taskExecutorObj = {
             studentName: data.taskExecutorName,
             studentId: data.taskExecutor
@@ -194,7 +194,7 @@ export default {
     },
     clickDownLoad (record) {
       const { obj } = this.data
-      downLoadFile({ id: obj.id, index: record.idx }).then((res) => {
+      downLoadFile({ id: obj.id, row: record.idx }).then((res) => {
         if (res) {
           const fileName = `结果资料`
           downLoadExcel(res, fileName).then(() => {})

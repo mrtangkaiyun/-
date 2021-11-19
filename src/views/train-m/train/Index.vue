@@ -3,13 +3,6 @@
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
         <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @graduation="graduation" @task="task"></search-bar>
-        <!-- <div class="delete-box">
-          <popconfirm-button custom :data="record" @click="clickDeleteSelect">
-            <a-button :disabled="!selectedRowKeys || selectedRowKeys.length === 0" type="danger">
-              删除
-            </a-button>
-          </popconfirm-button>
-        </div> -->
         <a-table
           :columns="columns"
           :dataSource="table.data"
@@ -51,6 +44,7 @@ import { list, updateById } from '@/api/pair'
 import model from '@/public/indexModel.js'
 import ListModal from '../ListModal'
 import Add from '../Add'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Master',
   mixins: [model],
@@ -68,6 +62,9 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   created () {
     this.fetchData()
   },
@@ -77,6 +74,7 @@ export default {
         const { current, pageSize } = this.pagination
         params.pageNum = current
         params.pageSize = pageSize
+        params.maaId = this.userInfo.id
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false
@@ -87,18 +85,6 @@ export default {
         })
       }
     },
-    // clickDeleteSelect () {
-    //   const { selectedRowKeys } = this
-    // },
-    // clickDelete (record) {
-    //   remove(record.id).then(({ code }) => {
-    //     if (code === 0) {
-    //       this.$message.success('删除成功')
-    //       this.conditionPage()
-    //       this.fetchData(this.params)
-    //     }
-    //   })
-    // },
     graduation () { // 已出师
       if (this.selectedRowKeys && this.selectedRowKeys.length >= 1) {
         const id = this.selectedRowKeys[0]

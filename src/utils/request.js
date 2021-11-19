@@ -67,7 +67,8 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  let { data: { code, message, status } } = response
+  let { data: { code, message, status }, config } = response
+  console.log(response, 123456)
   if (code && code == '200') {
     code = 0
     response.data.code = 0
@@ -87,7 +88,7 @@ request.interceptors.response.use((response) => {
       }
     })
     return Promise.reject(response.data)
-  } else if (code !== 0) {
+  } else if (code !== 0 && config.responseType !== 'blob') {
     Message.error(message || '请求错误')
   }
   return response.data

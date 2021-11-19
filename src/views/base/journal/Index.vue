@@ -28,11 +28,11 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { list } from '@/api/analysis'
+import { list } from '@/api/journal'
 import model from '@/public/indexModel.js'
 import { valueToLabelOption } from '@/utils/option'
 export default {
-  name: 'Monitor',
+  name: 'Journal',
   mixins: [model],
   data () {
     return {

@@ -69,7 +69,7 @@ const permission = {
         const routerMap = cloneDeep(asyncRouterMap)
         console.log(routerMap, permissions, '----权限----')
         // true暂时不校验权限
-        const accessedRouters = filterAsyncRouter(routerMap, permissions, true)
+        const accessedRouters = filterAsyncRouter(routerMap, permissions)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getInfo, logout } from '@/api/login'
+import { login, getInfo, logout } from '@/api/user'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -36,27 +36,26 @@ const user = {
     // 登录
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        const response = { data: { token: '----------token-----------' }, code: 1 }
-        // login(userInfo).then(response => {
+        // const response = { data: { token: '----------token-----------' }, code: 1 }
+        login(userInfo).then(response => {
           console.log(response, '----------token-----------')
           const result = response.data
           storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           resolve(response)
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        const response = { data: { result: { permissions: [ ] } }, code: 1 }
-        // getInfo().then(response => {
+        getInfo().then(response => {
           console.log(response, '----------用户信息-----------')
+          response.data.permissions = response.data.menu ? response.data.menu : []
           const result = response.data
-          result.permissions = ['admin']
           if (result && result.permissions.length > 0) {
             // const role = result.role
             // role.permissions = result.role.permissions
@@ -73,13 +72,13 @@ const user = {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
 
-          commit('SET_NAME', { name: result.nickName, welcome: welcome() })
+          commit('SET_NAME', { name: result.username, welcome: welcome() })
           commit('SET_AVATAR', result.avatarUrl)
 
           resolve(response)
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 

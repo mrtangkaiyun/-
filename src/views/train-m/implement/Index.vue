@@ -27,8 +27,6 @@
           <span slot="action" slot-scope="text, record">
             <a-button type="primary" shape="circle" icon="form" @click="clickUpdate(record)"/>
             <a-divider type="vertical" />
-            <a-button type="primary" shape="circle" icon="menu" @click="clickListRecord(record)"/>
-            <a-divider type="vertical" />
             <a-button type="primary" shape="circle" icon="info" @click="clickDetail(record)"/>
             <a-divider type="vertical" />
             <popconfirm-button custom :data="record" @click="clickDelete">
@@ -39,7 +37,6 @@
       </div>
     </a-card>
     <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refresh" @edit="fetchData"></add>
-    <list-modal v-if="listObj.visiable" v-model="listObj.visiable" :data="listObj.data" @add="refresh" @edit="fetchData"></list-modal>
   </page-header-wrapper>
 </template>
 
@@ -47,15 +44,12 @@
 import { columns, searchData } from './js/index'
 import { taskList, levelRemove, startAndEndTask } from '@/api/train'
 import model from '@/public/indexModel.js'
-import ListModal from './ListModal'
-// import Add from '../../task/Add.vue'
 import Add from '../Add.vue'
 export default {
   name: 'Implement',
   mixins: [model],
   components: {
-    Add,
-    ListModal
+    Add
   },
   data () {
     return {

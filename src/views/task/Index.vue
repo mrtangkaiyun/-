@@ -47,6 +47,7 @@ import { columns, searchData } from './js/index'
 import { taskList } from '@/api/train'
 import model from '@/public/indexModel.js'
 import Add from './Add'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Task',
   mixins: [model],
@@ -59,6 +60,9 @@ export default {
       searchData
     }
   },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   created () {
     this.fetchData()
   },
@@ -69,7 +73,7 @@ export default {
         params.pageNum = current
         params.pageSize = pageSize
         this.table.loading = true
-        params.id = this.id || 17
+        params.id = this.userInfo.id
         taskList(params).then(({ code, data }) => {
           this.table.loading = false
           if (code === 0) {
