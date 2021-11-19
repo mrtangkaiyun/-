@@ -9,13 +9,13 @@ import { Modal, Message } from 'ant-design-vue'
 // 创建 axios 实例
 const request = axios.create({
   // API 请求的默认前缀
-  // baseURL: process.env.VUE_APP_API_BASE_URL,
+  baseURL: process.env.VUE_APP_API_BASE_URL,
   // baseURL: 'http://cbqio.imdo.co/admin',
   // baseURL: 'http://39.100.91.195:8000/admin',
   // baseURL: 'https://123.57.210.202:8000/admin',
   // baseURL: 'https://huiqian.shop/admin',
   // baseURL: 'http://39.99.170.112:8095/api',
-  baseURL: 'http://demofortest.natapp1.cc/api',
+  // baseURL: 'http://demofortest.natapp1.cc/api',
   timeout: 6000 // 请求超时时间
 })
 
