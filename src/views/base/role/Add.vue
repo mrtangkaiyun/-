@@ -34,12 +34,12 @@
           <a-button type="primary" class="margin-l-20" @click="handleSubmit" :loading="button.loading">保存</a-button>
         </div>
       </a-form-model>
-      <tree-modal
+      <!-- <tree-modal
         v-if="listObj.visiable"
         v-model="listObj.visiable"
         :data="listObj.data"
         @confirm="confirmTree"
-      ></tree-modal>
+      ></tree-modal> -->
     </a-modal>
   </div>
 </template>
@@ -52,7 +52,7 @@ import { save } from '@/api/role'
 import { treeData } from '@/utils/auth'
 export default {
   mixins: [model, rules],
-  components: { TreeModal },
+  // components: { TreeModal },
   data () {
     return {
       formInit: {
@@ -104,6 +104,7 @@ export default {
             params.id = obj.id
           }
           params.menus = this.addParentKey(params.menus)
+          params.menu = this.$copy(params.menus).join(',')
           this.$setKeyValue(this.button, { loading: true, text: '提交中' })
           save(params).then((result) => this.process(result))
         } else {
@@ -125,8 +126,8 @@ export default {
         }
       }
       this.checkedKeys = checkedKeys
-      this.objA.menus = checkedKeys
-      this.$setOriginalKV(this.formInit, obj)
+      objA.menus = checkedKeys
+      this.$setOriginalKV(this.formInit, objA)
     },
     addParentKey (keys) {
       let checkedKeys = this.$copy(keys); const eachKeys = []
@@ -151,6 +152,19 @@ export default {
         }
       }
       return bool
+    },
+    onExpand (expandedKeys) {
+      console.log('onExpand', expandedKeys)
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
+    },
+    onCheck (checkedKeys) {
+      console.log('onCheck', checkedKeys)
+      this.checkedKeys = checkedKeys
+    },
+    onSelect (selectedKeys, info) {
+      console.log('onSelect', info)
+      this.selectedKeys = selectedKeys
     }
   }
 }
