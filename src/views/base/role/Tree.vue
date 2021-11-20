@@ -79,25 +79,9 @@ export default {
       }
       return bool
     },
-    selectParentsTwo (menus, keys, arr = []) {
-      let bool = false
-      for (let i = 0; i < menus.length; i++) {
-        if (!bool) {
-           bool = keys.some(e => (e === menus[i].key))
-        }
-        if (menus[i].children) {
-         const b = this.selectParentsTwo(menus[i].children, keys, arr)
-         if (b) {
-           bool = b
-           arr.push(menus[i].key)
-         }
-        }
-      }
-      return bool
-    },
     handleSubmit () {
       let checkedKeys = this.$copy(this.checkedKeys); const eachKeys = []
-      this.selectParentsTwo(this.treeData, checkedKeys, eachKeys)
+      this.selectParents(this.treeData, checkedKeys, eachKeys)
       checkedKeys = checkedKeys.concat(eachKeys)
       checkedKeys = new Set(checkedKeys)
       checkedKeys = Array.from(checkedKeys)

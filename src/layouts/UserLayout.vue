@@ -3,7 +3,7 @@
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
     <div class="container">
       <div class="user-layout-lang">
-        <select-lang class="select-lang-trigger" />
+        <!-- <select-lang class="select-lang-trigger" /> -->
       </div>
       <div class="user-layout-content">
         <div class="top">
@@ -19,17 +19,6 @@
         </div>
 
         <router-view />
-
-        <!-- <div class="footer">
-          <div class="links">
-            <a href="_self">帮助</a>
-            <a href="_self">隐私</a>
-            <a href="_self">条款</a>
-          </div>
-          <div class="copyright">
-            Copyright &copy; 2018 vueComponent
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -57,7 +46,7 @@ export default {
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
   height: 100%;
-
+  background-image: repeating-linear-gradient(#158E76,#259E82,#31AB89)!important;
   &.mobile {
     .container {
       .main {
@@ -66,19 +55,19 @@ export default {
       }
     }
   }
-
+  
   .container {
     width: 100%;
     min-height: 100%;
-    background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+    // background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
     background-size: 100%;
     //padding: 50px 0 84px;
     position: relative;
 
     .user-layout-lang {
       width: 100%;
-      height: 40px;
-      line-height: 44px;
+      height: 80px;
+      line-height: 80px;
       text-align: right;
 
       .select-lang-trigger {
@@ -122,7 +111,8 @@ export default {
 
           .title {
             font-size: 33px;
-            color: rgba(0, 0, 0, .85);
+            // color: rgba(0, 0, 0, .85);
+            color: white;
             font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
             font-weight: 600;
             position: relative;
@@ -131,7 +121,8 @@ export default {
         }
         .desc {
           font-size: 14px;
-          color: rgba(0, 0, 0, 0.45);
+          // color: rgba(0, 0, 0, 0.45);
+          color: white;
           margin-top: 12px;
           margin-bottom: 40px;
         }

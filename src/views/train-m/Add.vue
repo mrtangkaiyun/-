@@ -44,11 +44,11 @@
             <a-form-model-item label="任务执行人" prop="taskExecutor">
               <a-input style="display: none" placeholder="请输入" v-model="formInit.taskExecutor" />
               <a-radio-group v-if="formInit.taskExecutor" button-style="solid">
-                <a-radio-button style="margin: 15px" :value="formInit.taskExecutor">
+                <a-radio-button disabled style="margin: 15px" :value="formInit.taskExecutor">
                   {{ taskExecutorObj.studentName }}
                 </a-radio-button>
               </a-radio-group>
-              <a-button @click="clickListModal()">
+              <a-button v-if="!isDetail && !isEdit" @click="clickListModal()">
                 <a-icon type="plus" />点击选择
               </a-button>
             </a-form-model-item>
@@ -170,8 +170,11 @@ export default {
         if (code === 0) {
           this.table.data = data.wordNames ? data.wordNames.map((e, i) => ({ idx: i + 1, name: e })) : []
           this.taskExecutorObj = {
-            studentName: data.taskExecutorName,
-            studentId: data.taskExecutor
+            studentName: data.taskExecutorName || obj.studentName,
+            studentId: data.taskExecutor || obj.studentId
+          }
+          if(!data.taskExecutor) {
+            data.taskExecutor = obj.studentId
           }
           this.originalData = this.$copy(data)
           this.formInitInfo = this.$copy(data)

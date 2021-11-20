@@ -71,7 +71,7 @@ export default {
       if (this.selectedRowKeys && this.selectedRowKeys.length >= 1) {
         const id = this.selectedRowKeys[0]
         const row = this.table.data.find(e => (e.id === id))
-        startAndEndTask({ id, state: row.state }).then(({ code, message }) => {
+        startAndEndTask({ id, state: row.taskState || row.state }).then(({ code, message }) => {
           if (code === 0) {
             this.$message.success(message || '操作成功')
             this.conditionPage()

@@ -15,8 +15,19 @@
           <a-input :disabled="isDetail" placeholder="请输入" v-model="formInit.roleName" />
         </a-form-model-item>
         <a-form-model-item label="权限勾选" prop="menus">
+          <a-tree
+            :disable="isDetail"
+            v-model="formInit.menus"
+            checkable
+            :expanded-keys="expandedKeys"
+            :auto-expand-parent="autoExpandParent"
+            :selected-keys="selectedKeys"
+            :tree-data="treeData"
+            @expand="onExpand"
+            @select="onSelect"
+          />
           <!-- <a-input style="display: none" placeholder="请输入" v-model="formInit.menus" /> -->
-          <a-button @click="clickTree()"> <a-icon type="plus" />点击勾选 </a-button>
+          <!-- <a-button @click="clickTree()"> <a-icon type="plus" />点击勾选 </a-button> -->
         </a-form-model-item>
         <div v-if="!isDetail" class="text-center">
           <a-button @click="closeDialog"> 取消 </a-button>
@@ -37,7 +48,8 @@
 import model from '@/public/addModel.js'
 import rules from '@/public/rules'
 import { save } from '@/api/role'
-import TreeModal from './Tree.vue'
+// import TreeModal from './Tree.vue'
+import { treeData } from '@/utils/auth'
 export default {
   mixins: [model, rules],
   components: { TreeModal },
@@ -49,10 +61,15 @@ export default {
         menu: [],
         menus: []
       },
-      listObj: {
-        visiable: false,
-        data: null
-      }
+      // listObj: {
+      //   visiable: false,
+      //   data: null
+      // },
+      treeData,
+      expandedKeys: [],
+      autoExpandParent: true,
+      checkedKeys: [],
+      selectedKeys: []
     }
   },
   computed: {
@@ -62,11 +79,11 @@ export default {
     }
   },
   created () {
-    const { type, obj } = this.data
+    const { type } = this.data
     const title = type === 'edit' ? '修改' : '详情'
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
     if (type === 'edit' || type === 'detail') {
-      this.$setOriginalKV(this.formInit, obj)
+      this.delParentKeys()
     }
   },
   methods: {
@@ -86,12 +103,54 @@ export default {
           if (type === 'edit') {
             params.id = obj.id
           }
+          params.menus = this.addParentKey(params.menus)
           this.$setKeyValue(this.button, { loading: true, text: '提交中' })
           save(params).then((result) => this.process(result))
         } else {
           this.$message.warning('请完善上面必填信息')
         }
       })
+    },
+    delParentKeys () {
+      const { obj } = this.data
+      const objA = this.$copy(obj)
+      const checkedKeys = this.$copy(objA.menus || [])
+      const p = []
+      this.selectParents(this.treeData, checkedKeys, p)
+      for (let i = 0; i < checkedKeys.length; i++) {
+        const bool = p.some(e => (e === checkedKeys[i]))
+        if (bool) {
+          checkedKeys.splice(i, 1)
+          i--
+        }
+      }
+      this.checkedKeys = checkedKeys
+      this.objA.menus = checkedKeys
+      this.$setOriginalKV(this.formInit, obj)
+    },
+    addParentKey (keys) {
+      let checkedKeys = this.$copy(keys); const eachKeys = []
+      this.selectParents(this.treeData, checkedKeys, eachKeys)
+      checkedKeys = checkedKeys.concat(eachKeys)
+      checkedKeys = new Set(checkedKeys)
+      checkedKeys = Array.from(checkedKeys)
+      return checkedKeys
+    },
+    selectParents (menus, keys, arr = []) {
+      let bool = false
+      for (let i = 0; i < menus.length; i++) {
+        if (!bool) {
+           bool = keys.some(e => (e === menus[i].key))
+        }
+        if (menus[i].children) {
+         const b = this.selectParents(menus[i].children, keys, arr)
+         if (b) {
+           bool = b
+           arr.push(menus[i].key)
+         }
+        }
+      }
+      return bool
     }
   }
 }

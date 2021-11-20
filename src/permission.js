@@ -13,8 +13,20 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/analysis'
-
+// let num = 0
 router.beforeEach((to, from, next) => {
+  // if(num === 0) {
+  //   store.dispatch('GenerateRoutes', {permissions: ["Pupil", "Pair", "Train", "BaseAccount", "Base", "Master", "BaseRole", "Task", "Monitor"]}).then(() => {
+  //     store.getters.addRouters.forEach(r => {
+  //       router.addRoute(r)
+  //     })
+  //     next('/')
+  //     num++
+  //   })
+  // } else {
+  //   next()
+  // }
+  // return
   NProgress.start() // start progress bar
   to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
   /* has token */
