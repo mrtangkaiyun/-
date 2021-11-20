@@ -167,7 +167,7 @@ export default {
       recordOptions,
       classOptions: [],
       formInit: {
-        isType:'师傅',
+        isType: '师傅',
         number: null,
         name: null,
         company: null,

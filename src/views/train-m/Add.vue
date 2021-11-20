@@ -173,7 +173,7 @@ export default {
             studentName: data.taskExecutorName || obj.studentName,
             studentId: data.taskExecutor || obj.studentId
           }
-          if(!data.taskExecutor) {
+          if (!data.taskExecutor) {
             data.taskExecutor = obj.studentId
           }
           this.originalData = this.$copy(data)

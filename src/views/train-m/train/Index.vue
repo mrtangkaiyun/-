@@ -74,7 +74,7 @@ export default {
         const { current, pageSize } = this.pagination
         params.pageNum = current
         params.pageSize = pageSize
-        params.maaId = this.userInfo.id
+        params.maaId = this.userInfo.maaId
         this.table.loading = true
         list(params).then(({ code, data }) => {
           this.table.loading = false

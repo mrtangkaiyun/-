@@ -103,7 +103,7 @@ export default {
     //   const { selectedRowKeys } = this
     // },
     clickDelete (record) {
-      levelRemove({id: record.id}).then(({ code }) => {
+      levelRemove({ id: record.id }).then(({ code }) => {
         if (code === 0) {
           this.$message.success('删除成功')
           this.conditionPage()

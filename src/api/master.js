@@ -50,7 +50,6 @@ export function save (data) {
     })
 }
 
-
 export function queryStuTea (params) {
     return request({
         url: `${curl}/queryStuTea`,

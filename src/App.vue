@@ -70,8 +70,10 @@ export default {
     background-image: repeating-linear-gradient(#158E76,#259E82,#31AB89)!important;
 }
 .ant-menu-dark .ant-menu-inline.ant-menu-sub{
-  -webkit-box-shadow: 0 1px 1px rgb(0 0 0 / 10%) inset!important;
-   box-shadow: 0 1px 1px rgb(0 0 0 / 10%) inset!important;
+  // -webkit-box-shadow: 0 1px 1px rgb(0 0 0 / 10%) inset!important;
+  //  box-shadow: 0 1px 1px rgb(0 0 0 / 10%) inset!important;
+   -webkit-box-shadow: none!important;
+   box-shadow: none!important;
 }
 .ant-breadcrumb, .ant-breadcrumb-separator{
   color: #158E76!important;
