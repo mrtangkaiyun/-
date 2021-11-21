@@ -95,12 +95,16 @@ export function scorePassword (pass) {
 }
 
 export function downLoadExcel (blob, fileName) {
+  let type = 'application/vnd.ms-excel;charset=utf-8'
+  if (fileName.toLowerCase().indexOf('.docx') > -1) {
+    type = 'application/msword;charset=utf-8'
+  }
   return new Promise((resolve) => {
-      blob = new Blob([blob], { type: 'application/vnd.ms-excel;charset=utf-8' })
+      blob = new Blob([blob], { type })
       const elink = document.createElement('a')
           // 非IE下载
       if ('download' in elink) {
-          elink.download = `${fileName}.xlsx` // 文件名字
+          elink.download = `${fileName}` // 文件名字
           elink.style.display = 'none'
           elink.href = URL.createObjectURL(blob)
           document.body.appendChild(elink)
