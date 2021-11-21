@@ -110,7 +110,7 @@ export default {
       }
     },
     clickListRecord (record) {
-      this.$router.push({ path: '/implement', query: { id: record.studentId } })
+      this.$router.push({ path: '/implement', query: { id: record.id } })
     }
   }
 }

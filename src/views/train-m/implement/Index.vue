@@ -2,7 +2,7 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @taskStart="taskStartAndEnd(1)" @taskEnd="taskStartAndEnd(2)"></search-bar>
+        <search-bar ref="searchbar" :data="searchData" @search="clickSearch" @taskStart="taskStartAndEnd(2)" @taskEnd="taskStartAndEnd(3)"></search-bar>
         <!-- <div class="delete-box">
           <popconfirm-button custom :data="record" @click="clickDeleteSelect">
             <a-button :disabled="!selectedRowKeys || selectedRowKeys.length === 0" type="danger">
@@ -71,7 +71,7 @@ export default {
       if (this.selectedRowKeys && this.selectedRowKeys.length >= 1) {
         const id = this.selectedRowKeys[0]
         const row = this.table.data.find(e => (e.id === id))
-        startAndEndTask({ id, state: row.taskState || row.state }).then(({ code, message }) => {
+        startAndEndTask({ id, state: v }).then(({ code, message }) => {
           if (code === 0) {
             this.$message.success(message || '操作成功')
             this.conditionPage()
