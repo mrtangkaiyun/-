@@ -42,7 +42,7 @@
 
 <script>
 import { columns, searchData } from './js/index'
-import { taskList, levelRemove, startAndEndTask } from '@/api/train'
+import { leveTaskList, levelRemove, startAndEndTask } from '@/api/train'
 import model from '@/public/indexModel.js'
 import Add from '../Add.vue'
 export default {
@@ -90,7 +90,7 @@ export default {
         params.pageSize = pageSize
         params.id = this.id
         this.table.loading = true
-        taskList(params).then(({ code, data }) => {
+        leveTaskList(params).then(({ code, data }) => {
           this.table.loading = false
           if (code === 0) {
             this.pagination.total = data.total

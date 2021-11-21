@@ -48,9 +48,9 @@
                   {{ taskExecutorObj.studentName }}
                 </a-radio-button>
               </a-radio-group>
-              <a-button v-if="!isDetail && !isEdit" @click="clickListModal()">
+              <!-- <a-button v-if="!isDetail && !isEdit" @click="clickListModal()">
                 <a-icon type="plus" />点击选择
-              </a-button>
+              </a-button> -->
             </a-form-model-item>
           </a-col>
         </a-row>
@@ -160,6 +160,11 @@ export default {
       if (obj) {
         this.publisherName = obj.masterName
         this.formInit.publisher = obj.masterId
+        this.taskExecutorObj = {
+          studentName: obj.studentName,
+          studentId: obj.studentId
+        }
+        this.formInit.taskExecutor = obj.studentId
       }
     }
   },

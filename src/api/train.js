@@ -48,7 +48,7 @@ export function levelRemove (params) {
 
 export function leveTaskList (params) {
     return request({
-        url: `${curl}/taskList`,
+        url: `${curl}/list`,
         method: 'get',
         params
     })
