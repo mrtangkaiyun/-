@@ -204,7 +204,7 @@ export default {
       const { obj } = this.data
       downLoadFile({ id: obj.id, row: record.idx }).then((res) => {
         if (res) {
-          const fileName = `结果资料`
+          const fileName = record.name
           downLoadExcel(res, fileName).then(() => {})
         }
       })

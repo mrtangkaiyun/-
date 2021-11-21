@@ -63,11 +63,11 @@ export function startAndEndTask (params) {
 }
 
 //  徒弟修改任务执行反馈
-export function pupilEdit (params) {
+export function pupilEdit (data) {
     return request({
         url: `${curl}/updateTask`,
         method: 'post',
-        params
+        data
     })
 }
 
