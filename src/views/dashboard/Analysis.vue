@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="home"> 首页 </h1>
+    <img src="@/assets/home.png" width="100%" alt="">
   </div>
 </template>
 
